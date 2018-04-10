@@ -88,7 +88,9 @@ abstract class BaseRequestContent implements RequestContentInterface
             }
         }
 
-        $this->body['authToken'] = $this->authToken;
+        if ($this->authToken !== null) {
+            $this->body['authToken'] = $this->authToken;
+        }
 
         return json_encode($this->body);
     }
