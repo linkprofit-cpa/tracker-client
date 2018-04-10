@@ -6,6 +6,7 @@ use linkprofit\Tracker\AccessLevel;
 
 /**
  * Class BaseRequestContent
+ *
  * @package linkprofit\Tracker\request
  */
 class BaseRequestContent implements RequestContentInterface

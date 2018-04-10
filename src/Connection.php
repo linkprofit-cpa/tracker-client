@@ -4,6 +4,7 @@ namespace linkprofit\Tracker;
 
 /**
  * Class Connection
+ *
  * @package linkprofit\Tracker
  */
 class Connection
@@ -41,14 +42,6 @@ class Connection
         $this->userPassword = $userPassword;
         $this->apiUrl = $apiUrl;
         $this->accessLevel = $accessLevel;
-    }
-
-    /**
-     * @return string
-     */
-    public function getApiUrl()
-    {
-        return $this->apiUrl;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace linkprofit\Tracker\request;
 
 /**
  * Interface RequestContentInterface
+ *
  * @package linkprofit\Tracker\request
  */
 interface RequestContentInterface

@@ -6,6 +6,7 @@ use linkprofit\Tracker\request\OffersRequestContent;
 
 /**
  * Class OffersFilterBuilder
+ *
  * @package linkprofit\Tracker\filter
  */
 class OffersFilterBuilder implements FilterBuilderInterface

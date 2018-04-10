@@ -4,6 +4,7 @@ namespace linkprofit\Tracker;
 
 /**
  * Class AccessLevel
+ *
  * @package linkprofit\Tracker
  */
 class AccessLevel

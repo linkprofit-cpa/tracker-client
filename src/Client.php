@@ -10,6 +10,7 @@ use Psr\Cache\CacheItemInterface;
 
 /**
  * Class Client
+ *
  * @package linkprofit\Tracker
  */
 class Client

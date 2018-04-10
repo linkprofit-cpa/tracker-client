@@ -6,6 +6,7 @@ use linkprofit\Tracker\filter\FilterBuilderInterface;
 
 /**
  * Class OffersRequestContent
+ *
  * @package linkprofit\Tracker\request
  */
 class OffersRequestContent extends BaseRequestContent

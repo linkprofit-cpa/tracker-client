@@ -6,6 +6,7 @@ use linkprofit\Tracker\Connection;
 
 /**
  * Class ConnectionRequestContent
+ *
  * @package linkprofit\Tracker\request
  */
 class ConnectionRequestContent extends BaseRequestContent

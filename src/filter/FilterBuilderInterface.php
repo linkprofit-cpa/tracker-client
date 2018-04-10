@@ -6,6 +6,8 @@ use linkprofit\Tracker\request\RequestContentInterface;
 
 /**
  * Interface FilterBuilderInterface
+ *
+ * @package linkprofit\Tracker\filter
  */
 interface FilterBuilderInterface
 {

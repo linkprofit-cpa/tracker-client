@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Response;
 
 /**
  * Class ResponseHandler
+ *
  * @package linkprofit\Tracker
  */
 class ResponseHandler
