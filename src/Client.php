@@ -54,7 +54,7 @@ class Client
     )
     {
         $this->connection = new ConnectionRequestContent($connection);
-        $this->apiUrl = $connection->getApiUrl();
+        $this->apiUrl = $connection->apiUrl;
 
         if ($httpClient === null) {
             $httpClient = $this->getDefaultHttpClient();
