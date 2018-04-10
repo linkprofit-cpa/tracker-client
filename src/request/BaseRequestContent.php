@@ -9,7 +9,7 @@ use linkprofit\Tracker\AccessLevel;
  *
  * @package linkprofit\Tracker\request
  */
-class BaseRequestContent implements RequestContentInterface
+abstract class BaseRequestContent implements RequestContentInterface
 {
     /**
      * @var string
