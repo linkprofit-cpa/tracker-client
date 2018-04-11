@@ -97,7 +97,7 @@ class Client
         $responseHandler = new ResponseHandler($result);
         $response = $responseHandler->toArray();
 
-        if ($responseHandler->isSuccess() && isset($response['authToken'])) {
+        if (isset($response['authToken']) && $responseHandler->isSuccess()) {
             $this->setAuthToken($response['authToken']);
 
             return true;
