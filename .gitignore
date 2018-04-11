@@ -1,4 +1,4 @@
 /vendor
-/tests/logs/coverage.clover
+/tests/logs/
 composer.lock
 .idea

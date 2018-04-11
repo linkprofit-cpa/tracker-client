@@ -95,10 +95,10 @@ class Client
         $result = $this->httpClient->send($request);
 
         $responseHandler = new ResponseHandler($result);
-        $array = $responseHandler->toArray();
+        $response = $responseHandler->toArray();
 
-        if ($responseHandler->isSuccess() && isset($array['authToken'])) {
-            $this->setAuthToken($array['authToken']);
+        if ($responseHandler->isSuccess() && isset($response['authToken'])) {
+            $this->setAuthToken($response['authToken']);
 
             return true;
         }
