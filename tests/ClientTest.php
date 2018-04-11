@@ -3,8 +3,6 @@
 namespace linkprofit\AmoCRM\tests;
 
 use linkprofit\Tracker\Client;
-use linkprofit\Tracker\Connection;
-use linkprofit\Tracker\request\ConnectionRequestContent;
 use linkprofit\Tracker\ResponseHandler;
 use linkprofit\Tracker\tests\fakers\HttpClient;
 use linkprofit\Tracker\tests\providers\ConnectionRequestContentProvider;

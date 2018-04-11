@@ -1,15 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 11.04.18
- * Time: 14:23
- */
 
 namespace linkprofit\Tracker\tests\providers;
 
 use linkprofit\Tracker\filter\OffersFilterBuilder;
-use linkprofit\Tracker\request\OffersRequestContent;
 
 class OffersRequestContentProvider
 {

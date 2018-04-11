@@ -2,7 +2,6 @@
 
 namespace linkprofit\Tracker\tests\providers;
 
-
 use linkprofit\Tracker\request\ConnectionRequestContent;
 
 class ConnectionRequestContentProvider

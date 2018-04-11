@@ -1,15 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 11.04.18
- * Time: 14:22
- */
 
 namespace linkprofit\AmoCRM\tests\request;
 
 use linkprofit\Tracker\AccessLevel;
-use linkprofit\Tracker\request\OffersRequestContent;
 use linkprofit\Tracker\tests\providers\OffersRequestContentProvider;
 use PHPUnit\Framework\TestCase;
 
