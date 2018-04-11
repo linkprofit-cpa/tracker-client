@@ -6,7 +6,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request;
 use linkprofit\Tracker\request\ConnectionRequestContent;
 use linkprofit\Tracker\request\RequestContentInterface;
-use Psr\Cache\CacheItemInterface;
+use Psr\SimpleCache\CacheInterface;
 
 /**
  * Class Client
@@ -26,9 +26,9 @@ class Client
     protected $connection;
 
     /**
-     * @var CacheItemInterface
+     * @var CacheInterface
      */
-    protected $cacheItem;
+    protected $cache;
 
     /**
      * @var \GuzzleHttp\Client|ClientInterface
@@ -44,13 +44,13 @@ class Client
      * Client constructor.
      * @param Connection $connection
      * @param ClientInterface|null $httpClient
-     * @param CacheItemInterface|null $cacheItem
+     * @param CacheInterface|null $cache
      */
     public function __construct
     (
         Connection          $connection,
         ClientInterface     $httpClient = null,
-        CacheItemInterface  $cacheItem  = null
+        CacheInterface      $cache = null
     )
     {
         $this->connection = new ConnectionRequestContent($connection);
@@ -61,7 +61,7 @@ class Client
         }
 
         $this->httpClient = $httpClient;
-        $this->cacheItem = $cacheItem;
+        $this->cache = $cache;
     }
 
     /**
@@ -107,11 +107,11 @@ class Client
     }
 
     /**
-     * @param CacheItemInterface $cacheItem
+     * @param CacheInterface $cache
      */
-    public function setCacheItem(CacheItemInterface $cacheItem)
+    public function setCache(CacheInterface $cache)
     {
-        $this->cacheItem = $cacheItem;
+        $this->cache = $cache;
     }
 
     /**
