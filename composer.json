@@ -27,7 +27,11 @@
   },
   "autoload": {
     "psr-4": {
-      "linkprofit\\Tracker\\": "src/",
+      "linkprofit\\Tracker\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
       "linkprofit\\Tracker\\tests\\": "tests/"
     }
   }
