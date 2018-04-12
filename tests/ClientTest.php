@@ -3,7 +3,7 @@
 namespace linkprofit\AmoCRM\tests;
 
 use linkprofit\Tracker\Client;
-use linkprofit\Tracker\ResponseHandler;
+use linkprofit\Tracker\response\ArrayResponseHandler;
 use linkprofit\Tracker\tests\fakers\HttpClient;
 use linkprofit\Tracker\tests\providers\ConnectionRequestContentProvider;
 use linkprofit\Tracker\tests\providers\OffersRequestContentProvider;
@@ -113,9 +113,9 @@ class ClientTest extends TestCase
         $client->setHttpClient($http);
         $response = $client->exec($this->offers->get());
 
-        $this->assertInstanceOf(ResponseHandler::class, $response);
+        $this->assertInstanceOf(ArrayResponseHandler::class, $response);
         $this->assertTrue($response->isSuccess());
-        $this->assertNotEmpty($response->toArray());
+        $this->assertNotEmpty($response->handle());
     }
 
     public function testErrorConnect()
