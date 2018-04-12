@@ -179,12 +179,14 @@ class Client
     }
 
     /**
-     * TODO вытаскивать из кэша
-     *
-     * @return string
+     * @return string|null
      */
     protected function getAuthToken()
     {
+        if ($this->cache !== null && $this->cache->has($this->getAuthTokenName())) {
+            return $this->cache->get($this->getAuthTokenName());
+        }
+
         return $this->connection->getAuthToken();
     }
 
