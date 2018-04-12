@@ -1,12 +1,12 @@
 <?php
 
-namespace linkprofit\AmoCRM\tests;
+namespace linkprofit\AmoCRM\tests\response;
 
 use linkprofit\Tracker\tests\providers\ResponseProvider;
 use linkprofit\Tracker\ResponseHandler;
 use PHPUnit\Framework\TestCase;
 
-class ResponseHandlerTest extends TestCase
+class ArrayResponseHandlerTest extends TestCase
 {
     /**
      * @var ResponseProvider
