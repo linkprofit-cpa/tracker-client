@@ -6,6 +6,8 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request;
 use linkprofit\Tracker\request\ConnectionRequestContent;
 use linkprofit\Tracker\request\RequestContentInterface;
+use linkprofit\Tracker\response\ResponseHandlerInterface;
+use linkprofit\Tracker\response\ArrayResponseHandler;
 use Psr\SimpleCache\CacheInterface;
 use duncan3dc\Cache\FilesystemPool;
 
@@ -37,7 +39,7 @@ class Client
     protected $httpClient;
 
     /**
-     * @var ResponseHandler
+     * @var ResponseHandlerInterface
      */
     protected $responseHandler;
 
@@ -48,26 +50,30 @@ class Client
 
     /**
      * Client constructor.
+     *
      * @param Connection $connection
      * @param ClientInterface|null $httpClient
+     * @param ResponseHandlerInterface|null $responseHandler
      * @param CacheInterface|null $cache
      */
     public function __construct
     (
-        Connection          $connection,
-        ClientInterface     $httpClient = null,
-        CacheInterface      $cache = null
+        Connection                  $connection,
+        ClientInterface             $httpClient = null,
+        ResponseHandlerInterface    $responseHandler = null,
+        CacheInterface              $cache = null
     )
     {
         $this->connection = new ConnectionRequestContent($connection);
         $this->apiUrl = $connection->apiUrl;
         $this->httpClient = ($httpClient === null) ? $this->getDefaultHttpClient() : $httpClient;
+        $this->responseHandler = ($responseHandler === null) ? $this->getDefaultResponseHandler() : $responseHandler;
         $this->cache = $cache;
     }
 
     /**
      * @param RequestContentInterface $requestContent
-     * @return ResponseHandler
+     * @return ResponseHandlerInterface
      */
     public function exec(RequestContentInterface $requestContent)
     {
@@ -81,7 +87,9 @@ class Client
 
         $result = $this->httpClient->send($request);
 
-        return new ResponseHandler($result);
+        $this->responseHandler->add($result);
+
+        return $this->responseHandler;
     }
 
     /**
@@ -95,8 +103,8 @@ class Client
 
         $result = $this->httpClient->send($request);
 
-        $responseHandler = new ResponseHandler($result);
-        $response = $responseHandler->toArray();
+        $responseHandler = new ArrayResponseHandler($result);
+        $response = $responseHandler->handle();
 
         if (isset($response['authToken']) && $responseHandler->isSuccess()) {
             $this->setAuthToken($response['authToken']);
@@ -135,6 +143,11 @@ class Client
         }
 
         return new FilesystemPool($path);
+    }
+
+    public function getDefaultResponseHandler()
+    {
+        return new ArrayResponseHandler();
     }
 
     /**
