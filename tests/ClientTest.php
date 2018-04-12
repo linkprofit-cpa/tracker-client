@@ -72,6 +72,34 @@ class ClientTest extends TestCase
         $this->assertEquals('nice_token', $this->invokeMethod($client, 'getAuthToken'));
     }
 
+    public function testTokenCache()
+    {
+        $path = vfsStream::url('cache');
+
+        $client = new Client($this->connection->getUser());
+        $http = new HttpClient();
+        $http->setResponse($this->response->getSuccess());
+        $client->setHttpClient($http);
+        $client->setCache($client->getDefaultFileCache($path));
+        $client->connect();
+
+        $this->assertTrue(vfsStreamWrapper::getRoot()->hasChildren());
+
+        unset($client);
+
+        $client = new Client($this->connection->getUser());
+        $client->setCache($client->getDefaultFileCache($path));
+
+        $this->assertEquals('nice_token', $this->invokeMethod($client, 'getAuthToken'));
+
+        unset($client);
+
+        $client = new Client($this->connection->getAdmin());
+        $client->setCache($client->getDefaultFileCache($path));
+
+        $this->assertNull($this->invokeMethod($client, 'getAuthToken'));
+    }
+
     public function testOfferExec()
     {
         $client = new Client($this->connection->getUser());
