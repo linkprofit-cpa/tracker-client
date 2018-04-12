@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use linkprofit\Tracker\request\ConnectionRequestContent;
 use linkprofit\Tracker\request\RequestContentInterface;
 use Psr\SimpleCache\CacheInterface;
+use duncan3dc\Cache\FilesystemPool;
 
 /**
  * Class Client
@@ -125,6 +126,20 @@ class Client
     public function setHttpClient(ClientInterface $httpClient)
     {
         $this->httpClient = $httpClient;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return FilesystemPool
+     */
+    public function getDefaultFileCache($path = null)
+    {
+        if ($path === null) {
+            $path = dirname(__DIR__) . '/cache';
+        }
+
+        return new FilesystemPool($path);
     }
 
     /**
