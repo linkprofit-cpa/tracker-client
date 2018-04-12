@@ -6,7 +6,8 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request;
 use linkprofit\Tracker\request\ConnectionRequestContent;
 use linkprofit\Tracker\request\RequestContentInterface;
-use Psr\Cache\CacheItemInterface;
+use Psr\SimpleCache\CacheInterface;
+use duncan3dc\Cache\FilesystemPool;
 
 /**
  * Class Client
@@ -26,9 +27,9 @@ class Client
     protected $connection;
 
     /**
-     * @var CacheItemInterface
+     * @var CacheInterface
      */
-    protected $cacheItem;
+    protected $cache;
 
     /**
      * @var \GuzzleHttp\Client|ClientInterface
@@ -41,27 +42,27 @@ class Client
     protected $responseHandler;
 
     /**
+     * Используется для кэширования
+     */
+    const AUTH_TOKEN_KEY = 'trackerAuthToken';
+
+    /**
      * Client constructor.
      * @param Connection $connection
      * @param ClientInterface|null $httpClient
-     * @param CacheItemInterface|null $cacheItem
+     * @param CacheInterface|null $cache
      */
     public function __construct
     (
         Connection          $connection,
         ClientInterface     $httpClient = null,
-        CacheItemInterface  $cacheItem  = null
+        CacheInterface      $cache = null
     )
     {
         $this->connection = new ConnectionRequestContent($connection);
         $this->apiUrl = $connection->apiUrl;
-
-        if ($httpClient === null) {
-            $httpClient = $this->getDefaultHttpClient();
-        }
-
-        $this->httpClient = $httpClient;
-        $this->cacheItem = $cacheItem;
+        $this->httpClient = ($httpClient === null) ? $this->getDefaultHttpClient() : $httpClient;
+        $this->cache = $cache;
     }
 
     /**
@@ -97,7 +98,7 @@ class Client
         $responseHandler = new ResponseHandler($result);
         $response = $responseHandler->toArray();
 
-        if ($responseHandler->isSuccess() && isset($response['authToken'])) {
+        if (isset($response['authToken']) && $responseHandler->isSuccess()) {
             $this->setAuthToken($response['authToken']);
 
             return true;
@@ -107,11 +108,11 @@ class Client
     }
 
     /**
-     * @param CacheItemInterface $cacheItem
+     * @param CacheInterface $cache
      */
-    public function setCacheItem(CacheItemInterface $cacheItem)
+    public function setCache(CacheInterface $cache)
     {
-        $this->cacheItem = $cacheItem;
+        $this->cache = $cache;
     }
 
     /**
@@ -123,9 +124,23 @@ class Client
     }
 
     /**
+     * @param string $path
+     *
+     * @return FilesystemPool
+     */
+    public function getDefaultFileCache($path = null)
+    {
+        if ($path === null) {
+            $path = dirname(__DIR__) . '/cache';
+        }
+
+        return new FilesystemPool($path);
+    }
+
+    /**
      * @return \GuzzleHttp\Client
      */
-    protected function getDefaultHttpClient()
+    public function getDefaultHttpClient()
     {
         return new \GuzzleHttp\Client();
     }
@@ -147,22 +162,34 @@ class Client
     }
 
     /**
-     * TODO сохранять в кэш
-     *
-     * @param string
+     * @param $authToken
      */
     protected function setAuthToken($authToken)
     {
         $this->connection->setAuthToken($authToken);
+
+        if ($this->cache !== null) {
+            $this->cache->set($this->getAuthTokenName(), $authToken);
+        }
     }
 
     /**
-     * TODO вытаскивать из кэша
-     *
-     * @return string
+     * @return string|null
      */
     protected function getAuthToken()
     {
+        if ($this->cache !== null && $this->cache->has($this->getAuthTokenName())) {
+            return $this->cache->get($this->getAuthTokenName());
+        }
+
         return $this->connection->getAuthToken();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getAuthTokenName()
+    {
+        return self::AUTH_TOKEN_KEY . $this->connection->getAccessLevel();
     }
 }

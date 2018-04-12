@@ -10,6 +10,9 @@ use linkprofit\Tracker\tests\providers\OffersRequestContentProvider;
 use linkprofit\Tracker\tests\providers\ResponseProvider;
 use PHPUnit\Framework\TestCase;
 use linkprofit\Tracker\tests\providers\ConnectionProvider;
+use org\bovigo\vfs\vfsStreamWrapper;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStream;
 
 class ClientTest extends TestCase
 {
@@ -27,7 +30,6 @@ class ClientTest extends TestCase
      * @var ResponseProvider
      */
     public $response;
-
 
     /**
      * @var OffersRequestContentProvider
@@ -70,6 +72,34 @@ class ClientTest extends TestCase
         $this->assertEquals('nice_token', $this->invokeMethod($client, 'getAuthToken'));
     }
 
+    public function testTokenCache()
+    {
+        $path = vfsStream::url('cache');
+
+        $client = new Client($this->connection->getUser());
+        $http = new HttpClient();
+        $http->setResponse($this->response->getSuccess());
+        $client->setHttpClient($http);
+        $client->setCache($client->getDefaultFileCache($path));
+        $client->connect();
+
+        $this->assertTrue(vfsStreamWrapper::getRoot()->hasChildren());
+
+        unset($client);
+
+        $client = new Client($this->connection->getUser());
+        $client->setCache($client->getDefaultFileCache($path));
+
+        $this->assertEquals('nice_token', $this->invokeMethod($client, 'getAuthToken'));
+
+        unset($client);
+
+        $client = new Client($this->connection->getAdmin());
+        $client->setCache($client->getDefaultFileCache($path));
+
+        $this->assertNull($this->invokeMethod($client, 'getAuthToken'));
+    }
+
     public function testOfferExec()
     {
         $client = new Client($this->connection->getUser());
@@ -107,6 +137,9 @@ class ClientTest extends TestCase
         $this->connectionContent = new ConnectionRequestContentProvider();
         $this->response = new ResponseProvider();
         $this->offers = new OffersRequestContentProvider();
+
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory('cache'));
     }
 
     public function invokeMethod(&$object, $methodName, array $parameters = array())

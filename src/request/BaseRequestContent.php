@@ -83,7 +83,7 @@ abstract class BaseRequestContent implements RequestContentInterface
 
         $allowedParams = array_merge($this->config['filters'], $this->config['required']);
         foreach ($this->filters as $filterName => $filterValue) {
-            if (in_array($filterName, $allowedParams)) {
+            if (in_array($filterName, $allowedParams, true)) {
                 $this->body[$filterName] = $filterValue;
             }
         }
