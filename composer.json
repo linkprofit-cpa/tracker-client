@@ -25,6 +25,9 @@
     "mikey179/vfsStream": "~1",
     "roave/security-advisories": "dev-master"
   },
+  "config": {
+    "sort-packages": true
+  },
   "autoload": {
     "psr-4": {
       "linkprofit\\Tracker\\": "src/"
