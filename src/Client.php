@@ -145,7 +145,7 @@ class Client
     /**
      * @return \GuzzleHttp\Client
      */
-    protected function getDefaultHttpClient()
+    public function getDefaultHttpClient()
     {
         return new \GuzzleHttp\Client();
     }
