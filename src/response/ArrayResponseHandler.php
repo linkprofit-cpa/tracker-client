@@ -1,16 +1,15 @@
 <?php
 
-namespace linkprofit\Tracker;
+namespace linkprofit\Tracker\response;
 
 use GuzzleHttp\Psr7\Response;
-use linkprofit\Tracker\response\ResponseHandlerInterface;
 
 /**
- * Class ResponseHandler
+ * Class ArrayResponseHandler
  *
  * @package linkprofit\Tracker
  */
-class ResponseHandler implements ResponseHandlerInterface
+class ArrayResponseHandler implements ResponseHandlerInterface
 {
     /**
      * @var array
@@ -23,10 +22,21 @@ class ResponseHandler implements ResponseHandlerInterface
     protected $response;
 
     /**
-     * ResponseHandler constructor.
+     * ArrayResponseHandler constructor.
+     *
+     * @param Response|null $response
+     */
+    public function __construct(Response $response = null)
+    {
+        if ($response !== null) {
+            $this->add($response);
+        }
+    }
+
+    /**
      * @param Response $response
      */
-    public function __construct(Response $response)
+    public function add(Response $response)
     {
         $this->response = $response;
         $this->createArray();
@@ -37,6 +47,8 @@ class ResponseHandler implements ResponseHandlerInterface
      */
     public function handle()
     {
+        $this->createArray();
+
         return $this->decodedArray;
     }
 
