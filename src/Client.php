@@ -167,13 +167,15 @@ class Client
     }
 
     /**
-     * TODO сохранять в кэш
-     *
-     * @param string
+     * @param $authToken
      */
     protected function setAuthToken($authToken)
     {
         $this->connection->setAuthToken($authToken);
+
+        if ($this->cache !== null) {
+            $this->cache->set($this->getAuthTokenName(), $authToken);
+        }
     }
 
     /**
