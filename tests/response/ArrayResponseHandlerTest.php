@@ -2,8 +2,8 @@
 
 namespace linkprofit\AmoCRM\tests\response;
 
+use linkprofit\Tracker\response\ArrayResponseHandler;
 use linkprofit\Tracker\tests\providers\ResponseProvider;
-use linkprofit\Tracker\ResponseHandler;
 use PHPUnit\Framework\TestCase;
 
 class ArrayResponseHandlerTest extends TestCase
@@ -15,20 +15,20 @@ class ArrayResponseHandlerTest extends TestCase
 
     public function testIsSuccess()
     {
-        $response = new ResponseHandler($this->responseProvider->getSuccess());
+        $response = new ArrayResponseHandler($this->responseProvider->getSuccess());
         $this->assertTrue($response->isSuccess());
 
-        $response = new ResponseHandler($this->responseProvider->getError());
+        $response = new ArrayResponseHandler($this->responseProvider->getError());
         $this->assertFalse($response->isSuccess());
     }
 
-    public function testToArray()
+    public function testHandle()
     {
-        $response = new ResponseHandler($this->responseProvider->getSuccess());
-        $this->assertEquals($response->toArray(), ['success' => true, 'authToken' => 'nice_token']);
+        $response = new ArrayResponseHandler($this->responseProvider->getSuccess());
+        $this->assertEquals($response->handle(), ['success' => true, 'authToken' => 'nice_token']);
 
-        $response = new ResponseHandler($this->responseProvider->getEmpty());
-        $this->assertEquals($response->toArray(), []);
+        $response = new ArrayResponseHandler($this->responseProvider->getEmpty());
+        $this->assertEquals($response->handle(), []);
     }
 
     public function setUp()
