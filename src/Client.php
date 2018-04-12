@@ -41,6 +41,11 @@ class Client
     protected $responseHandler;
 
     /**
+     * Используется для кэширования
+     */
+    const AUTH_TOKEN_KEY = 'trackerAuthToken';
+
+    /**
      * Client constructor.
      * @param Connection $connection
      * @param ClientInterface|null $httpClient
@@ -164,5 +169,13 @@ class Client
     protected function getAuthToken()
     {
         return $this->connection->getAuthToken();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getAuthTokenName()
+    {
+        return self::AUTH_TOKEN_KEY . $this->connection->getAccessLevel();
     }
 }
