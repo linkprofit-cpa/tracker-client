@@ -44,11 +44,6 @@ class Client
     protected $responseHandler;
 
     /**
-     * Используется для кэширования
-     */
-    const AUTH_TOKEN_KEY = 'trackerAuthToken';
-
-    /**
      * Client constructor.
      *
      * @param Connection $connection
@@ -185,7 +180,7 @@ class Client
         $this->connection->setAuthToken($authToken);
 
         if ($this->cache !== null) {
-            $this->cache->set($this->getAuthTokenName(), $authToken);
+            $this->cache->set($this->connection->getHash(), $authToken);
         }
     }
 
@@ -194,18 +189,11 @@ class Client
      */
     protected function getAuthToken()
     {
-        if ($this->cache !== null && $this->cache->has($this->getAuthTokenName())) {
-            return $this->cache->get($this->getAuthTokenName());
+        $authTokenName = $this->connection->getHash();
+        if ($this->cache !== null && $this->cache->has($authTokenName)) {
+            return $this->cache->get($authTokenName);
         }
 
         return $this->connection->getAuthToken();
-    }
-
-    /**
-     * @return string
-     */
-    protected function getAuthTokenName()
-    {
-        return self::AUTH_TOKEN_KEY . $this->connection->getAccessLevel();
     }
 }
