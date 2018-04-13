@@ -11,13 +11,25 @@ use linkprofit\Tracker\Connection;
  */
 class ConnectionRequestContent extends BaseRequestContent
 {
-    protected $config = [
-        'userUrl' => '/authorization/user',
-        'adminUrl' => '/authorization/employer',
-        'method' => 'PUT',
-        'required' => ['userName','userPassword'],
-        'filters' => [],
-    ];
+    /**
+     * @var string
+     */
+    protected $userUrl = '/authorization/user';
+
+    /**
+     * @var string
+     */
+    protected $adminUrl = '/authorization/employer';
+
+    /**
+     * @var string
+     */
+    protected $method = 'PUT';
+
+    /**
+     * @var array
+     */
+    protected $required = ['userName','userPassword'];
 
     /**
      * ConnectionRequestContent constructor.
@@ -25,7 +37,7 @@ class ConnectionRequestContent extends BaseRequestContent
      */
     public function __construct(Connection $connection)
     {
-        $this->filters = $connection->toArray();
+        $this->activeFilters = $connection->toArray();
         $this->accessLevel = $connection->accessLevel;
     }
 

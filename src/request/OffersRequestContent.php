@@ -11,13 +11,25 @@ use linkprofit\Tracker\filter\FilterBuilderInterface;
  */
 class OffersRequestContent extends BaseRequestContent
 {
-    protected $config = [
-        'userUrl' => '/cabinet/user/read/offers',
-        'adminUrl' => '/administration/offers/read/list',
-        'method' => 'PUT',
-        'required' => [],
-        'filters' => ['merchantManagerId','categoryId','mainFilterItem','dateInsertedFrom','dateInsertedTo','active','types','fields','offset','limit','orderByField','orderByMethod'],
-    ];
+    /**
+     * @var string
+     */
+    protected $userUrl = '/cabinet/user/read/offers';
+
+    /**
+     * @var string
+     */
+    protected $adminUrl = '/administration/offers/read/list';
+
+    /**
+     * @var string
+     */
+    protected $method = 'PUT';
+
+    /**
+     * @var array
+     */
+    protected $filters = ['merchantManagerId','categoryId','mainFilterItem','dateInsertedFrom','dateInsertedTo','active','types','fields','offset','limit','orderByField','orderByMethod'];
 
     /**
      * OffersRequestContent constructor.
@@ -26,7 +38,7 @@ class OffersRequestContent extends BaseRequestContent
      */
     public function __construct(FilterBuilderInterface $filterBuilder, $authToken = null)
     {
-        $this->filters = $filterBuilder->toArray();
+        $this->activeFilters = $filterBuilder->toArray();
         $this->authToken = $authToken;
     }
 }

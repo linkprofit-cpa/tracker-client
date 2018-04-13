@@ -22,16 +22,6 @@ abstract class BaseRequestContent implements RequestContentInterface
     public $body = [];
 
     /**
-     * @var string
-     */
-    public $method;
-
-    /**
-     * @var array
-     */
-    protected $filters;
-
-    /**
      * @var int
      */
     protected $accessLevel;
@@ -42,16 +32,41 @@ abstract class BaseRequestContent implements RequestContentInterface
     protected $authToken;
 
     /**
+     * @var string
+     */
+    protected $userUrl;
+
+    /**
+     * @var string
+     */
+    protected $adminUrl;
+
+    /**
+     * @var string
+     */
+    protected $method;
+
+    /**
      * @var array
      */
-    protected $config;
+    protected $required = [];
+
+    /**
+     * @var array
+     */
+    protected $filters = [];
+
+    /**
+     * @var array
+     */
+    protected $activeFilters = [];
 
     /**
      * @return string|null
      */
     public function getUrl()
     {
-        $this->url = ($this->accessLevel === AccessLevel::ADMIN) ? $this->config['adminUrl'] : $this->config['userUrl'];
+        $this->url = ($this->accessLevel === AccessLevel::ADMIN) ? $this->adminUrl : $this->userUrl;
 
         return $this->url;
     }
@@ -81,8 +96,8 @@ abstract class BaseRequestContent implements RequestContentInterface
             return false;
         }
 
-        $allowedParams = array_merge($this->config['filters'], $this->config['required']);
-        foreach ($this->filters as $filterName => $filterValue) {
+        $allowedParams = array_merge($this->filters, $this->required);
+        foreach ($this->activeFilters as $filterName => $filterValue) {
             if (in_array($filterName, $allowedParams, true)) {
                 $this->body[$filterName] = $filterValue;
             }
@@ -100,7 +115,7 @@ abstract class BaseRequestContent implements RequestContentInterface
      */
     public function getMethod()
     {
-        return $this->config['method'];
+        return $this->method;
     }
 
     /**
@@ -108,8 +123,8 @@ abstract class BaseRequestContent implements RequestContentInterface
      */
     protected function checkRequired()
     {
-        foreach ($this->config['required'] as $paramName) {
-            if (!isset($this->filters[$paramName]) || !is_string($this->filters[$paramName])) {
+        foreach ($this->required as $paramName) {
+            if (!isset($this->activeFilters[$paramName]) || !is_string($this->activeFilters[$paramName])) {
                 return false;
             }
         }
