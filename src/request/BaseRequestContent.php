@@ -119,6 +119,16 @@ abstract class BaseRequestContent implements RequestContentInterface
     }
 
     /**
+     * @return string
+     */
+    public function getHash()
+    {
+        ksort($this->activeFilters);
+
+        return md5($this->getUrl() . json_encode($this->activeFilters));
+    }
+
+    /**
      * @return bool
      */
     protected function checkRequired()

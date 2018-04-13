@@ -54,16 +54,6 @@ class OffersFilterBuilder implements FilterBuilderInterface
     }
 
     /**
-     * @return $this
-     */
-    public function notHidden()
-    {
-        $this->params['hidden'] = 0;
-
-        return $this;
-    }
-
-    /**
      * @param $limit
      * @return $this
      */
