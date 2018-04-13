@@ -145,6 +145,9 @@ class Client
         return new FilesystemPool($path);
     }
 
+    /**
+     * @return ArrayResponseHandler
+     */
     public function getDefaultResponseHandler()
     {
         return new ArrayResponseHandler();
