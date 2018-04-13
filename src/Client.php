@@ -68,19 +68,27 @@ class Client
 
     /**
      * @param RequestContentInterface $requestContent
-     * @return ResponseHandlerInterface
+     * @return ResponseHandlerInterface|null
      */
     public function exec(RequestContentInterface $requestContent)
     {
-        if ($this->getAuthToken() === null) {
-            $this->connect();
+        if ($this->getAuthToken() === null && $this->connect() === false) {
+            return null;
         }
 
         $requestContent->setAccessLevel($this->connection->getAccessLevel());
         $requestContent->setAuthToken($this->getAuthToken());
-        $request = $this->createRequest($requestContent);
 
-        $result = $this->httpClient->send($request);
+        if ($this->cache !== null && $this->cache->has($requestContent->getHash())) {
+            $result = $this->cache->get($requestContent->getHash());
+        } else {
+            $request = $this->createRequest($requestContent);
+            $result = $this->httpClient->send($request);
+
+            if ($this->cache !== null) {
+                $this->cache->set($requestContent->getHash(), $result);
+            }
+        }
 
         $this->responseHandler->add($result);
 
