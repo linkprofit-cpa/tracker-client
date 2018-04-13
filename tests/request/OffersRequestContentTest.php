@@ -3,6 +3,7 @@
 namespace linkprofit\AmoCRM\tests\request;
 
 use linkprofit\Tracker\AccessLevel;
+use linkprofit\Tracker\filter\OffersFilterBuilder;
 use linkprofit\Tracker\tests\providers\OffersRequestContentProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -39,12 +40,33 @@ class OffersRequestContentTest extends TestCase
         $content = $this->offers->get();
         $this->assertEquals(json_encode($rightBody), $content->getBody());
 
-
         $content->setAuthToken('nice_token');
         $this->assertEquals(json_encode(array_merge($rightBody, ['authToken' => 'nice_token'])), $content->getBody());
 
         $content = new OffersRequestContentProvider();
         $this->assertEquals(json_encode([]), $content->getEmpty()->getBody());
+    }
+
+    public function testGetHash()
+    {
+        $content = new OffersFilterBuilder();
+        $secondContent = new OffersFilterBuilder();
+
+        $content->categoryId(1)->isActive()->limit(10);
+        $secondContent->limit(10)->categoryId(1)->isActive();
+
+        $requestContent = $content->createRequestContent();
+        $secondRequestContent = $secondContent->createRequestContent();
+
+        $this->assertEquals($requestContent->getHash(), $secondRequestContent->getHash());
+
+        $requestContent->setAccessLevel(AccessLevel::ADMIN);
+
+        $this->assertNotEquals($requestContent->getHash(), $secondRequestContent->getHash());
+
+        $secondContent->offset(1);
+
+        $this->assertNotEquals($content->createRequestContent()->getHash(), $secondContent->createRequestContent()->getHash());
     }
 
     public function setUp()
