@@ -33,4 +33,9 @@ interface RequestContentInterface
      * @param $authToken
      */
     public function setAuthToken($authToken);
+
+    /**
+     * @return string
+     */
+    public function getHash();
 }
