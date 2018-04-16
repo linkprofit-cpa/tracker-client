@@ -5,11 +5,11 @@ namespace linkprofit\Tracker\request;
 use linkprofit\Tracker\AccessLevel;
 
 /**
- * Class BaseRequestContent
+ * Class BaseRoute
  *
  * @package linkprofit\Tracker\request
  */
-abstract class BaseRequestContent implements RequestContentInterface
+abstract class BaseRoute implements RouteInterface
 {
     /**
      * @var string

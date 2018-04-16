@@ -5,11 +5,11 @@ namespace linkprofit\Tracker\request;
 use linkprofit\Tracker\Connection;
 
 /**
- * Class ConnectionRequestContent
+ * Class ConnectionRoute
  *
  * @package linkprofit\Tracker\request
  */
-class ConnectionRequestContent extends BaseRequestContent
+class ConnectionRoute extends BaseRoute
 {
     /**
      * @var string

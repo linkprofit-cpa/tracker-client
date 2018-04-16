@@ -9,7 +9,7 @@ use linkprofit\Tracker\filter\FilterBuilderInterface;
  *
  * @package linkprofit\Tracker\request
  */
-class OffersRequestContent extends BaseRequestContent
+class ReadOffersRoute extends BaseRoute
 {
     /**
      * @var string

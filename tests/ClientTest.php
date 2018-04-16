@@ -5,8 +5,8 @@ namespace linkprofit\AmoCRM\tests;
 use linkprofit\Tracker\Client;
 use linkprofit\Tracker\response\ArrayResponseHandler;
 use linkprofit\Tracker\tests\fakers\HttpClient;
-use linkprofit\Tracker\tests\providers\ConnectionRequestContentProvider;
-use linkprofit\Tracker\tests\providers\OffersRequestContentProvider;
+use linkprofit\Tracker\tests\providers\ConnectionRouteProvider;
+use linkprofit\Tracker\tests\providers\ReadOffersRouteProvider;
 use linkprofit\Tracker\tests\providers\ResponseProvider;
 use PHPUnit\Framework\TestCase;
 use linkprofit\Tracker\tests\providers\ConnectionProvider;
@@ -22,7 +22,7 @@ class ClientTest extends TestCase
     public $connection;
 
     /**
-     * @var ConnectionRequestContentProvider
+     * @var ConnectionRouteProvider
      */
     public $connectionContent;
 
@@ -32,7 +32,7 @@ class ClientTest extends TestCase
     public $response;
 
     /**
-     * @var OffersRequestContentProvider
+     * @var ReadOffersRouteProvider
      */
     public $offers;
 
@@ -158,9 +158,9 @@ class ClientTest extends TestCase
     public function setUp()
     {
         $this->connection = new ConnectionProvider();
-        $this->connectionContent = new ConnectionRequestContentProvider();
+        $this->connectionContent = new ConnectionRouteProvider();
         $this->response = new ResponseProvider();
-        $this->offers = new OffersRequestContentProvider();
+        $this->offers = new ReadOffersRouteProvider();
 
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('cache'));

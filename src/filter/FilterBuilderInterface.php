@@ -2,7 +2,7 @@
 
 namespace linkprofit\Tracker\filter;
 
-use linkprofit\Tracker\request\RequestContentInterface;
+use linkprofit\Tracker\request\RouteInterface;
 
 /**
  * Interface FilterBuilderInterface
@@ -19,7 +19,7 @@ interface FilterBuilderInterface
     public function toArray();
 
     /**
-     * @return RequestContentInterface
+     * @return RouteInterface
      */
-    public function createRequestContent();
+    public function createRoute();
 }

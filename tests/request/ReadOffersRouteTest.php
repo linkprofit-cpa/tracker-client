@@ -5,12 +5,13 @@ namespace linkprofit\AmoCRM\tests\request;
 use linkprofit\Tracker\AccessLevel;
 use linkprofit\Tracker\filter\OffersFilterBuilder;
 use linkprofit\Tracker\tests\providers\OffersRequestContentProvider;
+use linkprofit\Tracker\tests\providers\ReadOffersRouteProvider;
 use PHPUnit\Framework\TestCase;
 
-class OffersRequestContentTest extends TestCase
+class ReadOffersRouteTest extends TestCase
 {
     /**
-     * @var OffersRequestContentProvider
+     * @var ReadOffersRouteProvider
      */
     public $offers;
 
@@ -43,7 +44,7 @@ class OffersRequestContentTest extends TestCase
         $content->setAuthToken('nice_token');
         $this->assertEquals(json_encode(array_merge($rightBody, ['authToken' => 'nice_token'])), $content->getBody());
 
-        $content = new OffersRequestContentProvider();
+        $content = new ReadOffersRouteProvider();
         $this->assertEquals(json_encode([]), $content->getEmpty()->getBody());
     }
 
@@ -55,8 +56,8 @@ class OffersRequestContentTest extends TestCase
         $content->categoryId(1)->isActive()->limit(10);
         $secondContent->limit(10)->categoryId(1)->isActive();
 
-        $requestContent = $content->createRequestContent();
-        $secondRequestContent = $secondContent->createRequestContent();
+        $requestContent = $content->createRoute();
+        $secondRequestContent = $secondContent->createRoute();
 
         $this->assertEquals($requestContent->getHash(), $secondRequestContent->getHash());
 
@@ -66,12 +67,12 @@ class OffersRequestContentTest extends TestCase
 
         $secondContent->offset(1);
 
-        $this->assertNotEquals($content->createRequestContent()->getHash(), $secondContent->createRequestContent()->getHash());
+        $this->assertNotEquals($content->createRoute()->getHash(), $secondContent->createRoute()->getHash());
     }
 
     public function setUp()
     {
-        $this->offers = new OffersRequestContentProvider();
+        $this->offers = new ReadOffersRouteProvider();
     }
 
     public function invokeMethod(&$object, $methodName, array $parameters = array())

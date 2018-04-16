@@ -5,8 +5,8 @@ namespace linkprofit\Tracker;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use linkprofit\Tracker\request\ConnectionRequestContent;
-use linkprofit\Tracker\request\RequestContentInterface;
+use linkprofit\Tracker\request\ConnectionRoute;
+use linkprofit\Tracker\request\RouteInterface;
 use linkprofit\Tracker\response\ResponseHandlerInterface;
 use linkprofit\Tracker\response\ArrayResponseHandler;
 use Psr\SimpleCache\CacheInterface;
@@ -25,7 +25,7 @@ class Client
     public $apiUrl;
 
     /**
-     * @var ConnectionRequestContent
+     * @var ConnectionRoute
      */
     protected $connection;
 
@@ -60,7 +60,7 @@ class Client
         CacheInterface              $cache = null
     )
     {
-        $this->connection = new ConnectionRequestContent($connection);
+        $this->connection = new ConnectionRoute($connection);
         $this->apiUrl = $connection->apiUrl;
         $this->httpClient = ($httpClient === null) ? $this->getDefaultHttpClient() : $httpClient;
         $this->responseHandler = ($responseHandler === null) ? $this->getDefaultResponseHandler() : $responseHandler;
@@ -68,26 +68,27 @@ class Client
     }
 
     /**
-     * @param RequestContentInterface $requestContent
-     * @return ResponseHandlerInterface|null
+     * @param RouteInterface $route
+     *
+     * @return ArrayResponseHandler|ResponseHandlerInterface|null
      */
-    public function exec(RequestContentInterface $requestContent)
+    public function exec(RouteInterface $route)
     {
         if ($this->getAuthToken() === null && $this->connect() === false) {
             return null;
         }
 
-        $requestContent->setAccessLevel($this->connection->getAccessLevel());
-        $requestContent->setAuthToken($this->getAuthToken());
+        $route->setAccessLevel($this->connection->getAccessLevel());
+        $route->setAuthToken($this->getAuthToken());
 
-        if ($this->cache !== null && $this->cache->has($requestContent->getHash())) {
-            $response = $this->getResponseFromCache($requestContent->getHash());
+        if ($this->cache !== null && $this->cache->has($route->getHash())) {
+            $response = $this->getResponseFromCache($route->getHash());
         } else {
-            $request = $this->createRequest($requestContent);
+            $request = $this->createRequest($route);
             $response = $this->httpClient->send($request);
 
             if ($this->cache !== null) {
-                $this->setResponseToCache($response, $requestContent->getHash());
+                $this->setResponseToCache($response, $route->getHash());
             }
         }
 
@@ -166,16 +167,16 @@ class Client
     }
 
     /**
-     * @param RequestContentInterface $requestContent
+     * @param RouteInterface $route
      * @return Request
      */
-    protected function createRequest(RequestContentInterface $requestContent)
+    protected function createRequest(RouteInterface $route)
     {
         $request = new Request(
-            $requestContent->getMethod(),
-            $this->apiUrl . $requestContent->getUrl(),
+            $route->getMethod(),
+            $this->apiUrl . $route->getUrl(),
             $headers = [],
-            $requestContent->getBody()
+            $route->getBody()
         );
 
         return $request;

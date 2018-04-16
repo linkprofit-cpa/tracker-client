@@ -2,7 +2,7 @@
 
 namespace linkprofit\Tracker\filter;
 
-use linkprofit\Tracker\request\OffersRequestContent;
+use linkprofit\Tracker\request\ReadOffersRoute;
 
 /**
  * Class OffersFilterBuilder
@@ -25,11 +25,11 @@ class OffersFilterBuilder implements FilterBuilderInterface
     }
 
     /**
-     * @return OffersRequestContent
+     * @return ReadOffersRoute
      */
-    public function createRequestContent()
+    public function createRoute()
     {
-        return new OffersRequestContent($this);
+        return new ReadOffersRoute($this);
     }
 
     /**

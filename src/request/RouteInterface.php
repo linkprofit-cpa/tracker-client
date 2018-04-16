@@ -3,11 +3,11 @@
 namespace linkprofit\Tracker\request;
 
 /**
- * Interface RequestContentInterface
+ * Interface RouteInterface
  *
  * @package linkprofit\Tracker\request
  */
-interface RequestContentInterface
+interface RouteInterface
 {
     /**
      * @return string|null
