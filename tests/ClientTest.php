@@ -118,6 +118,30 @@ class ClientTest extends TestCase
         $this->assertNotEmpty($response->handle());
     }
 
+    public function testOfferCache()
+    {
+        $client = new Client($this->connection->getUser());
+        $http = new HttpClient();
+        $http->setResponse($this->response->getSuccess());
+        $client->setHttpClient($http);
+        $client->setCache($client->getDefaultFileCache(vfsStream::url('cache')));
+        $client->connect();
+
+        /* получаем "ответ" по офферам из нашего httpClient */
+        $http->setResponse($this->response->getSuccessOffer());
+        $client->setHttpClient($http);
+        $client->exec($this->offers->get());
+
+        /* задаем нулевой ответ в нашем httpClient, чтоб убедиться что данные возьмутся не из него, а из кэша */
+        $http->setResponse($this->response->getEmpty());
+        $client->setHttpClient($http);
+        $response = $client->exec($this->offers->get());
+
+        $this->assertInstanceOf(ArrayResponseHandler::class, $response);
+        $this->assertTrue($response->isSuccess());
+        $this->assertNotEmpty($response->handle());
+    }
+
     public function testErrorConnect()
     {
         $client = new Client($this->connection->getUser());
