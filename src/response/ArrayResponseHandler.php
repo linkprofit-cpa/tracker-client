@@ -57,9 +57,7 @@ class ArrayResponseHandler implements ResponseHandlerInterface
      */
     public function isSuccess()
     {
-        $isSuccess = isset($this->decodedArray['success']) && $this->decodedArray['success'] === true;
-
-        return $isSuccess;
+        return $this->response->getStatusCode() === 200;
     }
 
     /**
