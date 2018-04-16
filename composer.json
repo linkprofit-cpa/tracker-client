@@ -1,11 +1,11 @@
 {
-  "name": "linkprofit-cpa/tracker-api",
-  "description": "Tracker api client",
+  "name": "linkprofit-cpa/tracker-client",
+  "description": "Tracker API client",
   "keywords": [
     "tracker",
-    "api"
+    "API"
   ],
-  "homepage": "https://github.com/linkprofit-cpa/tracker-api",
+  "homepage": "https://github.com/linkprofit-cpa/tracker-client",
   "license": "MIT",
   "authors": [
     {
