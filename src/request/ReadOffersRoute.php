@@ -12,12 +12,12 @@ use linkprofit\Tracker\filter\FilterBuilderInterface;
 class ReadOffersRoute extends BaseRoute
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $userUrl = '/cabinet/user/read/offers';
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $adminUrl = '/administration/offers/read/list';
 

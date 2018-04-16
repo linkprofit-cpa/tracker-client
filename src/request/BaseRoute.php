@@ -22,6 +22,11 @@ abstract class BaseRoute implements RouteInterface
     public $body = [];
 
     /**
+     * @var array
+     */
+    public $activeFilters = [];
+
+    /**
      * @var int
      */
     protected $accessLevel;
@@ -32,12 +37,12 @@ abstract class BaseRoute implements RouteInterface
     protected $authToken;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $userUrl;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $adminUrl;
 
@@ -55,11 +60,6 @@ abstract class BaseRoute implements RouteInterface
      * @var array
      */
     protected $filters = [];
-
-    /**
-     * @var array
-     */
-    protected $activeFilters = [];
 
     /**
      * @return string|null
