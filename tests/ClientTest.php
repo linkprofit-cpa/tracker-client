@@ -107,6 +107,7 @@ class ClientTest extends TestCase
         $http = new HttpClient();
         $http->setResponse($this->response->getSuccess());
         $client->setHttpClient($http);
+        $client->setResponseHandler(new ArrayResponseHandler());
 
         $client->connect();
 

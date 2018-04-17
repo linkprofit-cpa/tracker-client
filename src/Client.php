@@ -137,6 +137,14 @@ class Client
     }
 
     /**
+     * @param ResponseHandlerInterface $responseHandler
+     */
+    public function setResponseHandler(ResponseHandlerInterface $responseHandler)
+    {
+        $this->responseHandler = $responseHandler;
+    }
+
+    /**
      * @param string $path
      *
      * @return FilesystemPool
