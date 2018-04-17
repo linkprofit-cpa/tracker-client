@@ -34,6 +34,7 @@ class ReadOffersBuilder implements BuilderInterface
 
     /**
      * @param $id
+     *
      * @return $this
      */
     public function categoryId($id)
@@ -55,6 +56,7 @@ class ReadOffersBuilder implements BuilderInterface
 
     /**
      * @param $limit
+     *
      * @return $this
      */
     public function limit($limit)
@@ -66,6 +68,7 @@ class ReadOffersBuilder implements BuilderInterface
 
     /**
      * @param $offset
+     *
      * @return $this
      */
     public function offset($offset)
@@ -77,11 +80,38 @@ class ReadOffersBuilder implements BuilderInterface
 
     /**
      * @param $field
+     *
      * @return $this
      */
     public function orderByField($field)
     {
         $this->params['orderByField'] = $field;
+
+        return $this;
+    }
+
+    /**
+     * @param $id
+     *
+     * @return $this
+     */
+    public function merchantManagerId($id)
+    {
+        $this->params['merchantManagerId'] = $id;
+
+        return $this;
+    }
+
+    /**
+     * Like поиск по полям, поля не указываются
+     *
+     * @param string $term
+     *
+     * @return $this
+     */
+    public function mainFilterItem($term)
+    {
+        $this->params['mainFilterItem'] = (string) $term;
 
         return $this;
     }
