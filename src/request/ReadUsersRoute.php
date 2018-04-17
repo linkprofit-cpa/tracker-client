@@ -29,7 +29,7 @@ class ReadUsersRoute extends BaseRoute
     /**
      * @var array
      */
-    protected $filters = ['limit', 'fields', 'statuses'];
+    protected $filters = ['limit', 'offset', 'fields', 'statuses'];
 
     /**
      * OffersRequestContent constructor.

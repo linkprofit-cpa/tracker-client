@@ -66,6 +66,17 @@ class ReadUsersBuilder implements BuilderInterface
     }
 
     /**
+     * @param $offset
+     * @return $this
+     */
+    public function offset($offset)
+    {
+        $this->params['offset'] = $offset;
+
+        return $this;
+    }
+
+    /**
      * @param array $fields
      *
      * @return $this
