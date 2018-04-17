@@ -5,21 +5,21 @@ namespace linkprofit\Tracker\request;
 use linkprofit\Tracker\filter\FilterBuilderInterface;
 
 /**
- * Class OffersRequestContent
+ * Class ReadUsersRoute
  *
  * @package linkprofit\Tracker\request
  */
-class ReadOffersRoute extends BaseRoute
+class ReadUsersRoute extends BaseRoute
 {
     /**
      * @var string|null
      */
-    protected $userUrl = '/cabinet/user/read/offers';
+    protected $userUrl;
 
     /**
      * @var string|null
      */
-    protected $adminUrl = '/administration/offers/read/list';
+    protected $adminUrl = '/administration/read/users/list';
 
     /**
      * @var string
@@ -29,7 +29,7 @@ class ReadOffersRoute extends BaseRoute
     /**
      * @var array
      */
-    protected $filters = ['merchantManagerId','categoryId','mainFilterItem','dateInsertedFrom','dateInsertedTo','active','types','fields','offset','limit','orderByField','orderByMethod'];
+    protected $filters = ['limit', 'fields', 'statuses'];
 
     /**
      * OffersRequestContent constructor.

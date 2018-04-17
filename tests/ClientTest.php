@@ -2,6 +2,7 @@
 
 namespace linkprofit\AmoCRM\tests;
 
+use duncan3dc\Cache\FilesystemPool;
 use linkprofit\Tracker\Client;
 use linkprofit\Tracker\response\ArrayResponseHandler;
 use linkprofit\Tracker\tests\fakers\HttpClient;
@@ -153,6 +154,24 @@ class ClientTest extends TestCase
         $this->assertFalse($client->connect());
 
         $this->assertNull($this->invokeMethod($client, 'getAuthToken'));
+        $this->assertNull($client->exec($this->offers->get()));
+    }
+
+    public function testErrorGetResponseFromCache()
+    {
+        $client = new Client($this->connection->getUser());
+        $client->setCache($client->getDefaultFileCache(vfsStream::url('cache')));
+        $this->assertNull($this->invokeMethod($client, 'getResponseFromCache', ['fakeKey']));
+    }
+
+    public function testGetDefaultFileCache()
+    {
+        $client = new Client($this->connection->getUser());
+        $fileCache = $this->invokeMethod($client, 'getDefaultFileCache');
+        $this->assertInstanceOf(FilesystemPool::class, $fileCache);
+
+        $expectedPath = dirname(__DIR__) . '/cache' . DIRECTORY_SEPARATOR . 'key' . ".cache";
+        $this->assertEquals($expectedPath, $this->invokeMethod($fileCache, 'getPath', ['key']));
     }
 
     public function setUp()

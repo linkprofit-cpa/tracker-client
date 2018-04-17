@@ -12,12 +12,12 @@ use linkprofit\Tracker\Connection;
 class ConnectionRoute extends BaseRoute
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $userUrl = '/authorization/user';
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $adminUrl = '/authorization/employer';
 
