@@ -31,9 +31,9 @@ class Connection
 
     /**
      * Connection constructor.
-     * @param null $userName
-     * @param null $userPassword
-     * @param null $apiUrl
+     * @param string|null $userName
+     * @param string|null $userPassword
+     * @param string|null $apiUrl
      * @param int $accessLevel
      */
     public function __construct($userName = null, $userPassword = null, $apiUrl = null, $accessLevel = AccessLevel::USER)

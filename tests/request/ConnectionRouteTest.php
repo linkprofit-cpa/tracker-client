@@ -54,7 +54,7 @@ class ConnectionRouteTest extends TestCase
         $this->assertEquals(json_encode($rightBody), $content->getBody());
 
         $content = new ConnectionRoute($this->connection->getEmpty());
-        $this->assertFalse($content->getBody());
+        $this->assertNull($content->getBody());
     }
 
     public function setUp()

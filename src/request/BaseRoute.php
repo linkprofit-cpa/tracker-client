@@ -80,7 +80,7 @@ abstract class BaseRoute implements RouteInterface
     }
 
     /**
-     * @param null $authToken
+     * @param string|null $authToken
      */
     public function setAuthToken($authToken = null)
     {
@@ -88,12 +88,12 @@ abstract class BaseRoute implements RouteInterface
     }
 
     /**
-     * @return bool|string
+     * @return null|string
      */
     public function getBody()
     {
         if (!$this->checkRequired()) {
-            return false;
+            return null;
         }
 
         $allowedParams = array_merge($this->filters, $this->required);

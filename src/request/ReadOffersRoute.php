@@ -29,12 +29,12 @@ class ReadOffersRoute extends BaseRoute
     /**
      * @var array
      */
-    protected $filters = ['merchantManagerId','categoryId','mainFilterItem','dateInsertedFrom','dateInsertedTo','active','types','fields','offset','limit','orderByField','orderByMethod'];
+    protected $filters = ['merchantManagerId', 'categoryId', 'mainFilterItem', 'dateInsertedFrom', 'dateInsertedTo', 'active', 'types', 'fields', 'offset', 'limit', 'orderByField', 'orderByMethod'];
 
     /**
      * OffersRequestContent constructor.
      * @param BuilderInterface $builder
-     * @param null $authToken
+     * @param string|null $authToken
      */
     public function __construct(BuilderInterface $builder, $authToken = null)
     {

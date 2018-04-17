@@ -34,7 +34,7 @@ class ReadUsersRoute extends BaseRoute
     /**
      * OffersRequestContent constructor.
      * @param BuilderInterface $builder
-     * @param null $authToken
+     * @param string|null $authToken
      */
     public function __construct(BuilderInterface $builder, $authToken = null)
     {
