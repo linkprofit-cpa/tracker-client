@@ -3,9 +3,7 @@
 namespace linkprofit\AmoCRM\tests\request;
 
 use linkprofit\Tracker\AccessLevel;
-use linkprofit\Tracker\filter\OffersFilterBuilder;
-use linkprofit\Tracker\filter\UsersFilterBuilder;
-use linkprofit\Tracker\tests\providers\OffersRequestContentProvider;
+use linkprofit\Tracker\builder\ReadUsersBuilder;
 use linkprofit\Tracker\tests\providers\ReadOffersRouteProvider;
 use linkprofit\Tracker\tests\providers\ReadUsersRouteProvider;
 use PHPUnit\Framework\TestCase;
@@ -52,8 +50,8 @@ class ReadUsersRouteTest extends TestCase
 
     public function testGetHash()
     {
-        $content = new UsersFilterBuilder();
-        $secondContent = new UsersFilterBuilder();
+        $content = new ReadUsersBuilder();
+        $secondContent = new ReadUsersBuilder();
 
         $content->statuses(['a', 'p'])->fields(['apiKey', 'refId'])->limit(5);
         $secondContent->fields(['apiKey', 'refId'])->limit(5)->statuses(['a', 'p']);

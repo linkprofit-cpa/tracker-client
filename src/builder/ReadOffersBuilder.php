@@ -1,15 +1,15 @@
 <?php
 
-namespace linkprofit\Tracker\filter;
+namespace linkprofit\Tracker\builder;
 
 use linkprofit\Tracker\request\ReadOffersRoute;
 
 /**
- * Class OffersFilterBuilder
+ * Class ReadOffersBuilder
  *
  * @package linkprofit\Tracker\filter
  */
-class OffersFilterBuilder implements FilterBuilderInterface
+class ReadOffersBuilder implements BuilderInterface
 {
     /**
      * @var array
@@ -34,6 +34,7 @@ class OffersFilterBuilder implements FilterBuilderInterface
 
     /**
      * @param $id
+     *
      * @return $this
      */
     public function categoryId($id)
@@ -55,6 +56,7 @@ class OffersFilterBuilder implements FilterBuilderInterface
 
     /**
      * @param $limit
+     *
      * @return $this
      */
     public function limit($limit)
@@ -66,6 +68,7 @@ class OffersFilterBuilder implements FilterBuilderInterface
 
     /**
      * @param $offset
+     *
      * @return $this
      */
     public function offset($offset)
@@ -77,11 +80,38 @@ class OffersFilterBuilder implements FilterBuilderInterface
 
     /**
      * @param $field
+     *
      * @return $this
      */
     public function orderByField($field)
     {
         $this->params['orderByField'] = $field;
+
+        return $this;
+    }
+
+    /**
+     * @param $id
+     *
+     * @return $this
+     */
+    public function merchantManagerId($id)
+    {
+        $this->params['merchantManagerId'] = $id;
+
+        return $this;
+    }
+
+    /**
+     * Like поиск по полям, поля не указываются
+     *
+     * @param string $term
+     *
+     * @return $this
+     */
+    public function mainFilterItem($term)
+    {
+        $this->params['mainFilterItem'] = (string) $term;
 
         return $this;
     }
