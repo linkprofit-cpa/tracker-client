@@ -66,7 +66,7 @@ class ArrayResponseHandler implements ResponseHandlerInterface
     protected function createArray()
     {
         $jsonDecode = $this->jsonDecode();
-        $this->decodedArray = is_array($jsonDecode) ?  $jsonDecode : [];
+        $this->decodedArray = is_array($jsonDecode) ? $jsonDecode : [];
     }
 
     /**

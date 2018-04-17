@@ -29,7 +29,7 @@ class ConnectionRoute extends BaseRoute
     /**
      * @var array
      */
-    protected $required = ['userName','userPassword'];
+    protected $required = ['userName', 'userPassword'];
 
     /**
      * ConnectionRequestContent constructor.

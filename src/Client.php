@@ -52,8 +52,7 @@ class Client
      * @param ResponseHandlerInterface|null $responseHandler
      * @param CacheInterface|null $cache
      */
-    public function __construct
-    (
+    public function __construct(
         Connection                  $connection,
         ClientInterface             $httpClient = null,
         ResponseHandlerInterface    $responseHandler = null,
@@ -193,7 +192,7 @@ class Client
     /**
      * @param int $statusCode
      * @param array $headers
-     * @param null $body
+     * @param string|null $body
      *
      * @return Response
      */
