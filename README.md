@@ -1,5 +1,11 @@
 # Tracker Client
 
+[![Latest Stable Version](https://poser.pugx.org/linkprofit-cpa/tracker-client/v/stable)](https://packagist.org/packages/linkprofit-cpa/tracker-client)
+[![Build Status](https://travis-ci.org/linkprofit-cpa/tracker-client.svg?branch=master)](https://travis-ci.org/linkprofit-cpa/tracker-client)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/linkprofit-cpa/tracker-client/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/linkprofit-cpa/tracker-client/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/linkprofit-cpa/tracker-client/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/linkprofit-cpa/tracker-client/?branch=master)
+[![License](https://poser.pugx.org/linkprofit-cpa/tracker-client/license)](https://packagist.org/packages/linkprofit-cpa/tracker-client)
+
 ## Описание
 
 Библиотека для взаимодействия с API трекера cpa-сети LINKPROFIT
@@ -43,4 +49,8 @@ $client->setCache($client->getDefaultFileCache());
 ```php
 $client->setResponseHandler(new ArrayResponseHandler());
 ```
+
+## Лицензия
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details
 
