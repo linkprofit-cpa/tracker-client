@@ -29,7 +29,7 @@ class ReadUsersRoute extends BaseRoute
     /**
      * @var array
      */
-    protected $filters = ['limit', 'offset', 'fields', 'statuses'];
+    protected $filters = ['limit', 'offset', 'fields', 'statuses', 'dateInsertedFrom', 'dateInsertedTo', 'orderByField', 'orderByMethod'];
 
     /**
      * OffersRequestContent constructor.

@@ -39,6 +39,13 @@ class ReadUsersBuilder implements BuilderInterface
     ];
 
     /**
+     * @var array
+     */
+    private $allowedSorting = [
+        SORT_DESC, SORT_ASC
+    ];
+
+    /**
      * @return array
      */
     public function toArray()
@@ -56,6 +63,7 @@ class ReadUsersBuilder implements BuilderInterface
 
     /**
      * @param $limit
+     *
      * @return $this
      */
     public function limit($limit)
@@ -67,6 +75,7 @@ class ReadUsersBuilder implements BuilderInterface
 
     /**
      * @param $offset
+     *
      * @return $this
      */
     public function offset($offset)
@@ -100,6 +109,92 @@ class ReadUsersBuilder implements BuilderInterface
         if (!empty($statuses)) {
             $this->params['statuses'] = $this->getValidStatuses($statuses);
         }
+
+        return $this;
+    }
+
+    /**
+     * @param integer $unixTime
+     *
+     * @return $this
+     */
+    public function dateInsertedFrom($unixTime = null)
+    {
+        if ($unixTime === null) {
+            $unixTime = time();
+        }
+
+        $this->params['dateInsertedFrom'] = date('d.m.Y', $unixTime);
+
+        return $this;
+    }
+
+    /**
+     * @param integer $unixTime
+     *
+     * @return $this
+     */
+    public function dateInsertedTo($unixTime = null)
+    {
+        if ($unixTime === null) {
+            $unixTime = time();
+        }
+
+        $this->params['dateInsertedFrom'] = date('d.m.Y', $unixTime);
+
+        return $this;
+    }
+
+    /**
+     * @param $field
+     *
+     * @return $this
+     */
+    public function orderByField($field)
+    {
+        $this->params['orderByField'] = $field;
+
+        return $this;
+    }
+
+    /**
+     * @param $method
+     *
+     * @return $this
+     */
+    public function orderByMethod($method)
+    {
+        if (in_array($method, $this->allowedSorting, true)) {
+            $method = ($method === SORT_ASC) ? 'ASC' : 'DESC';
+        }
+
+        $this->params['orderByMethod'] = $method;
+
+        return $this;
+    }
+
+    /**
+     * Like поиск по полям, поля не указываются
+     *
+     * @param string $term
+     *
+     * @return $this
+     */
+    public function mainFilterItem($term)
+    {
+        $this->params['mainFilterItem'] = (string) $term;
+
+        return $this;
+    }
+
+    /**
+     * @param integer $id
+     *
+     * @return $this
+     */
+    public function accountManagerId($id)
+    {
+        $this->params['accountManagerId'] = $id;
 
         return $this;
     }
