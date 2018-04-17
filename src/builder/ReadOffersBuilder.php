@@ -1,15 +1,15 @@
 <?php
 
-namespace linkprofit\Tracker\filter;
+namespace linkprofit\Tracker\builder;
 
 use linkprofit\Tracker\request\ReadOffersRoute;
 
 /**
- * Class OffersFilterBuilder
+ * Class ReadOffersBuilder
  *
  * @package linkprofit\Tracker\filter
  */
-class OffersFilterBuilder implements FilterBuilderInterface
+class ReadOffersBuilder implements BuilderInterface
 {
     /**
      * @var array

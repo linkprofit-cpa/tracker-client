@@ -2,7 +2,7 @@
 
 namespace linkprofit\Tracker\tests\providers;
 
-use linkprofit\Tracker\filter\OffersFilterBuilder;
+use linkprofit\Tracker\builder\ReadOffersBuilder;
 
 class ReadOffersRouteProvider
 {
@@ -11,7 +11,7 @@ class ReadOffersRouteProvider
      */
     public function get()
     {
-        $builder = new OffersFilterBuilder();
+        $builder = new ReadOffersBuilder();
         $builder->categoryId(1)->limit(1)->offset(20);
 
         return $builder->createRoute();
@@ -19,7 +19,7 @@ class ReadOffersRouteProvider
 
     public function getEmpty()
     {
-        $builder = new OffersFilterBuilder();
+        $builder = new ReadOffersBuilder();
 
         return $builder->createRoute();
     }

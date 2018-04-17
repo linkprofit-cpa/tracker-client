@@ -1,14 +1,14 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use linkprofit\Tracker\filter\UsersFilterBuilder;
+use linkprofit\Tracker\builder\ReadUsersBuilder;
 use linkprofit\Tracker\request\ReadUsersRoute;
 
-class UsersFilterBuilderTest extends TestCase
+class ReadUsersBuilderTest extends TestCase
 {
     public function testToArray()
     {
-        $builder = new UsersFilterBuilder();
+        $builder = new ReadUsersBuilder();
         $this->assertEquals([], $builder->toArray());
 
         $builder->statuses(['a', 'p'])->fields(['apiKey', 'refId'])->limit(5);
@@ -17,7 +17,7 @@ class UsersFilterBuilderTest extends TestCase
 
     public function testCreateRequestContent()
     {
-        $builder = new UsersFilterBuilder();
+        $builder = new ReadUsersBuilder();
         $builder->statuses(['a', 'p'])->fields(['apiKey', 'refId'])->limit(5);
 
         $this->assertInstanceOf(ReadUsersRoute::class, $builder->createRoute());

@@ -2,7 +2,7 @@
 
 namespace linkprofit\Tracker\tests\providers;
 
-use linkprofit\Tracker\filter\UsersFilterBuilder;
+use linkprofit\Tracker\builder\ReadUsersBuilder;
 
 class ReadUsersRouteProvider
 {
@@ -11,7 +11,7 @@ class ReadUsersRouteProvider
      */
     public function get()
     {
-        $builder = new UsersFilterBuilder();
+        $builder = new ReadUsersBuilder();
         $builder->statuses(['a', 'p'])->fields(['apiKey', 'refId'])->limit(5);
 
         return $builder->createRoute();
@@ -19,7 +19,7 @@ class ReadUsersRouteProvider
 
     public function getEmpty()
     {
-        $builder = new UsersFilterBuilder();
+        $builder = new ReadUsersBuilder();
 
         return $builder->createRoute();
     }

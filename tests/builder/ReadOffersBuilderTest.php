@@ -1,14 +1,14 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use linkprofit\Tracker\filter\OffersFilterBuilder;
+use linkprofit\Tracker\builder\ReadOffersBuilder;
 use linkprofit\Tracker\request\ReadOffersRoute;
 
-class OffersFilterBuilderTest extends TestCase
+class ReadOffersBuilderTest extends TestCase
 {
     public function testToArray()
     {
-        $builder = new OffersFilterBuilder();
+        $builder = new ReadOffersBuilder();
         $this->assertEquals([], $builder->toArray());
 
         $builder->categoryId(1)->isActive()->limit(10)->offset(20)->orderByField('field');
@@ -17,7 +17,7 @@ class OffersFilterBuilderTest extends TestCase
 
     public function testCreateRequestContent()
     {
-        $builder = new OffersFilterBuilder();
+        $builder = new ReadOffersBuilder();
         $builder->categoryId(1)->isActive()->limit(10)->offset(20)->orderByField('field');
 
         $this->assertInstanceOf(ReadOffersRoute::class, $builder->createRoute());

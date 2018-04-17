@@ -2,7 +2,7 @@
 
 namespace linkprofit\Tracker\request;
 
-use linkprofit\Tracker\filter\FilterBuilderInterface;
+use linkprofit\Tracker\builder\BuilderInterface;
 
 /**
  * Class ReadUsersRoute
@@ -33,12 +33,12 @@ class ReadUsersRoute extends BaseRoute
 
     /**
      * OffersRequestContent constructor.
-     * @param FilterBuilderInterface $filterBuilder
+     * @param BuilderInterface $builder
      * @param null $authToken
      */
-    public function __construct(FilterBuilderInterface $filterBuilder, $authToken = null)
+    public function __construct(BuilderInterface $builder, $authToken = null)
     {
-        $this->activeFilters = $filterBuilder->toArray();
+        $this->activeFilters = $builder->toArray();
         $this->authToken = $authToken;
     }
 }

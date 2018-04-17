@@ -1,15 +1,15 @@
 <?php
 
-namespace linkprofit\Tracker\filter;
+namespace linkprofit\Tracker\builder;
 
 use linkprofit\Tracker\request\RouteInterface;
 
 /**
- * Interface FilterBuilderInterface
+ * Interface BuilderInterface
  *
- * @package linkprofit\Tracker\filter
+ * @package linkprofit\Tracker\builder
  */
-interface FilterBuilderInterface
+interface BuilderInterface
 {
     /**
      * Должен возвращать ассоциативный массив, где key это название фильтра, а value это его значение

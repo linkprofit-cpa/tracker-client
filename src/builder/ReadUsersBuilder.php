@@ -1,15 +1,15 @@
 <?php
 
-namespace linkprofit\Tracker\filter;
+namespace linkprofit\Tracker\builder;
 
 use linkprofit\Tracker\request\ReadUsersRoute;
 
 /**
- * Class UsersFilterBuilder
+ * Class ReadUsersBuilder
  *
  * @package linkprofit\Tracker\filter
  */
-class UsersFilterBuilder implements FilterBuilderInterface
+class ReadUsersBuilder implements BuilderInterface
 {
     /**
      * @var array
