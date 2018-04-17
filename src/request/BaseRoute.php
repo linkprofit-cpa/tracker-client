@@ -5,11 +5,11 @@ namespace linkprofit\Tracker\request;
 use linkprofit\Tracker\AccessLevel;
 
 /**
- * Class BaseRequestContent
+ * Class BaseRoute
  *
  * @package linkprofit\Tracker\request
  */
-abstract class BaseRequestContent implements RequestContentInterface
+abstract class BaseRoute implements RouteInterface
 {
     /**
      * @var string
@@ -22,14 +22,9 @@ abstract class BaseRequestContent implements RequestContentInterface
     public $body = [];
 
     /**
-     * @var string
-     */
-    public $method;
-
-    /**
      * @var array
      */
-    protected $filters;
+    public $activeFilters = [];
 
     /**
      * @var int
@@ -42,16 +37,36 @@ abstract class BaseRequestContent implements RequestContentInterface
     protected $authToken;
 
     /**
+     * @var string|null
+     */
+    protected $userUrl;
+
+    /**
+     * @var string|null
+     */
+    protected $adminUrl;
+
+    /**
+     * @var string
+     */
+    protected $method;
+
+    /**
      * @var array
      */
-    protected $config;
+    protected $required = [];
+
+    /**
+     * @var array
+     */
+    protected $filters = [];
 
     /**
      * @return string|null
      */
     public function getUrl()
     {
-        $this->url = ($this->accessLevel === AccessLevel::ADMIN) ? $this->config['adminUrl'] : $this->config['userUrl'];
+        $this->url = ($this->accessLevel === AccessLevel::ADMIN) ? $this->adminUrl : $this->userUrl;
 
         return $this->url;
     }
@@ -81,9 +96,9 @@ abstract class BaseRequestContent implements RequestContentInterface
             return false;
         }
 
-        $allowedParams = array_merge($this->config['filters'], $this->config['required']);
-        foreach ($this->filters as $filterName => $filterValue) {
-            if (in_array($filterName, $allowedParams)) {
+        $allowedParams = array_merge($this->filters, $this->required);
+        foreach ($this->activeFilters as $filterName => $filterValue) {
+            if (in_array($filterName, $allowedParams, true)) {
                 $this->body[$filterName] = $filterValue;
             }
         }
@@ -100,7 +115,17 @@ abstract class BaseRequestContent implements RequestContentInterface
      */
     public function getMethod()
     {
-        return $this->config['method'];
+        return $this->method;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHash()
+    {
+        ksort($this->activeFilters);
+
+        return md5($this->getUrl() . json_encode($this->activeFilters));
     }
 
     /**
@@ -108,8 +133,8 @@ abstract class BaseRequestContent implements RequestContentInterface
      */
     protected function checkRequired()
     {
-        foreach ($this->config['required'] as $paramName) {
-            if (!isset($this->filters[$paramName]) || !is_string($this->filters[$paramName])) {
+        foreach ($this->required as $paramName) {
+            if (!isset($this->activeFilters[$paramName]) || !is_string($this->activeFilters[$paramName])) {
                 return false;
             }
         }

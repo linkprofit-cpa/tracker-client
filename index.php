@@ -11,9 +11,9 @@ $connection->accessLevel = \linkprofit\Tracker\AccessLevel::ADMIN;
 $client = new \linkprofit\Tracker\Client($connection);
 $client->connect();
 
-$offers = new \linkprofit\Tracker\filter\OffersFilterBuilder();
-$offers = $offers->isActive()->limit(10)->createRequestContent();
+$offers = new \linkprofit\Tracker\builder\ReadOffersBuilder();
+$offers = $offers->isActive()->limit(10)->createRoute();
 
-$response  = $client->exec($offers);
+$response = $client->exec($offers);
 
-var_dump($response->toArray());
+var_dump($response->handle());

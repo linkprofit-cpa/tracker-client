@@ -4,9 +4,13 @@ namespace linkprofit\Tracker;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request;
-use linkprofit\Tracker\request\ConnectionRequestContent;
-use linkprofit\Tracker\request\RequestContentInterface;
-use Psr\Cache\CacheItemInterface;
+use GuzzleHttp\Psr7\Response;
+use linkprofit\Tracker\request\ConnectionRoute;
+use linkprofit\Tracker\request\RouteInterface;
+use linkprofit\Tracker\response\ResponseHandlerInterface;
+use linkprofit\Tracker\response\ArrayResponseHandler;
+use Psr\SimpleCache\CacheInterface;
+use duncan3dc\Cache\FilesystemPool;
 
 /**
  * Class Client
@@ -21,14 +25,14 @@ class Client
     public $apiUrl;
 
     /**
-     * @var ConnectionRequestContent
+     * @var ConnectionRoute
      */
     protected $connection;
 
     /**
-     * @var CacheItemInterface
+     * @var CacheInterface
      */
-    protected $cacheItem;
+    protected $cache;
 
     /**
      * @var \GuzzleHttp\Client|ClientInterface
@@ -36,51 +40,61 @@ class Client
     protected $httpClient;
 
     /**
-     * @var ResponseHandler
+     * @var ResponseHandlerInterface
      */
     protected $responseHandler;
 
     /**
      * Client constructor.
+     *
      * @param Connection $connection
      * @param ClientInterface|null $httpClient
-     * @param CacheItemInterface|null $cacheItem
+     * @param ResponseHandlerInterface|null $responseHandler
+     * @param CacheInterface|null $cache
      */
     public function __construct
     (
-        Connection          $connection,
-        ClientInterface     $httpClient = null,
-        CacheItemInterface  $cacheItem  = null
+        Connection                  $connection,
+        ClientInterface             $httpClient = null,
+        ResponseHandlerInterface    $responseHandler = null,
+        CacheInterface              $cache = null
     )
     {
-        $this->connection = new ConnectionRequestContent($connection);
+        $this->connection = new ConnectionRoute($connection);
         $this->apiUrl = $connection->apiUrl;
-
-        if ($httpClient === null) {
-            $httpClient = $this->getDefaultHttpClient();
-        }
-
-        $this->httpClient = $httpClient;
-        $this->cacheItem = $cacheItem;
+        $this->httpClient = ($httpClient === null) ? $this->getDefaultHttpClient() : $httpClient;
+        $this->responseHandler = ($responseHandler === null) ? $this->getDefaultResponseHandler() : $responseHandler;
+        $this->cache = $cache;
     }
 
     /**
-     * @param RequestContentInterface $requestContent
-     * @return ResponseHandler
+     * @param RouteInterface $route
+     *
+     * @return ArrayResponseHandler|ResponseHandlerInterface|null
      */
-    public function exec(RequestContentInterface $requestContent)
+    public function exec(RouteInterface $route)
     {
-        if ($this->getAuthToken() === null) {
-            $this->connect();
+        if ($this->getAuthToken() === null && $this->connect() === false) {
+            return null;
         }
 
-        $requestContent->setAccessLevel($this->connection->getAccessLevel());
-        $requestContent->setAuthToken($this->getAuthToken());
-        $request = $this->createRequest($requestContent);
+        $route->setAccessLevel($this->connection->getAccessLevel());
+        $route->setAuthToken($this->getAuthToken());
 
-        $result = $this->httpClient->send($request);
+        if ($this->cache !== null && $this->cache->has($route->getHash())) {
+            $response = $this->getResponseFromCache($route->getHash());
+        } else {
+            $request = $this->createRequest($route);
+            $response = $this->httpClient->send($request);
 
-        return new ResponseHandler($result);
+            if ($this->cache !== null) {
+                $this->setResponseToCache($response, $route->getHash());
+            }
+        }
+
+        $this->responseHandler->add($response);
+
+        return $this->responseHandler;
     }
 
     /**
@@ -94,11 +108,11 @@ class Client
 
         $result = $this->httpClient->send($request);
 
-        $responseHandler = new ResponseHandler($result);
-        $array = $responseHandler->toArray();
+        $responseHandler = new ArrayResponseHandler($result);
+        $response = $responseHandler->handle();
 
-        if ($responseHandler->isSuccess() && isset($array['authToken'])) {
-            $this->setAuthToken($array['authToken']);
+        if (isset($response['authToken']) && $responseHandler->isSuccess()) {
+            $this->setAuthToken($response['authToken']);
 
             return true;
         }
@@ -107,11 +121,11 @@ class Client
     }
 
     /**
-     * @param CacheItemInterface $cacheItem
+     * @param CacheInterface $cache
      */
-    public function setCacheItem(CacheItemInterface $cacheItem)
+    public function setCache(CacheInterface $cache)
     {
-        $this->cacheItem = $cacheItem;
+        $this->cache = $cache;
     }
 
     /**
@@ -123,46 +137,130 @@ class Client
     }
 
     /**
+     * @param ResponseHandlerInterface $responseHandler
+     */
+    public function setResponseHandler(ResponseHandlerInterface $responseHandler)
+    {
+        $this->responseHandler = $responseHandler;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return FilesystemPool
+     */
+    public function getDefaultFileCache($path = null)
+    {
+        if ($path === null) {
+            $path = dirname(__DIR__) . '/cache';
+        }
+
+        return new FilesystemPool($path);
+    }
+
+    /**
+     * @return ArrayResponseHandler
+     */
+    public function getDefaultResponseHandler()
+    {
+        return new ArrayResponseHandler();
+    }
+
+    /**
      * @return \GuzzleHttp\Client
      */
-    protected function getDefaultHttpClient()
+    public function getDefaultHttpClient()
     {
         return new \GuzzleHttp\Client();
     }
 
     /**
-     * @param RequestContentInterface $requestContent
+     * @param RouteInterface $route
      * @return Request
      */
-    protected function createRequest(RequestContentInterface $requestContent)
+    protected function createRequest(RouteInterface $route)
     {
         $request = new Request(
-            $requestContent->getMethod(),
-            $this->apiUrl . $requestContent->getUrl(),
+            $route->getMethod(),
+            $this->apiUrl . $route->getUrl(),
             $headers = [],
-            $requestContent->getBody()
+            $route->getBody()
         );
 
         return $request;
     }
 
     /**
-     * TODO сохранять в кэш
+     * @param int $statusCode
+     * @param array $headers
+     * @param null $body
      *
-     * @param string
+     * @return Response
+     */
+    protected function createResponse($statusCode = 200, $headers = [], $body = null)
+    {
+        $response = new Response(
+            $statusCode,
+            $headers,
+            $body
+        );
+
+        return $response;
+    }
+
+    /**
+     * @param Response $response
+     * @param $key
+     */
+    protected function setResponseToCache(Response $response, $key)
+    {
+        $value = json_encode([
+            'statusCode' => $response->getStatusCode(),
+            'headers' => $response->getHeaders(),
+            'body' => (string) $response->getBody()
+        ]);
+
+        $this->cache->set($key, $value);
+    }
+
+    /**
+     * @param $key
+     *
+     * @return Response|null
+     */
+    protected function getResponseFromCache($key)
+    {
+        $value = json_decode($this->cache->get($key), 1);
+
+        if (is_array($value)) {
+            return $this->createResponse($value['statusCode'], $value['headers'], $value['body']);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $authToken
      */
     protected function setAuthToken($authToken)
     {
         $this->connection->setAuthToken($authToken);
+
+        if ($this->cache !== null) {
+            $this->cache->set($this->connection->getHash(), $authToken);
+        }
     }
 
     /**
-     * TODO вытаскивать из кэша
-     *
-     * @return string
+     * @return string|null
      */
     protected function getAuthToken()
     {
+        $authTokenName = $this->connection->getHash();
+        if ($this->cache !== null && $this->cache->has($authTokenName)) {
+            return $this->cache->get($authTokenName);
+        }
+
         return $this->connection->getAuthToken();
     }
 }

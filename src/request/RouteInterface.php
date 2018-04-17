@@ -3,11 +3,11 @@
 namespace linkprofit\Tracker\request;
 
 /**
- * Interface RequestContentInterface
+ * Interface RouteInterface
  *
  * @package linkprofit\Tracker\request
  */
-interface RequestContentInterface
+interface RouteInterface
 {
     /**
      * @return string|null
@@ -33,4 +33,9 @@ interface RequestContentInterface
      * @param $authToken
      */
     public function setAuthToken($authToken);
+
+    /**
+     * @return string
+     */
+    public function getHash();
 }
