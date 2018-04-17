@@ -27,6 +27,13 @@ class UsersFilterBuilder implements FilterBuilderInterface
         'status', 'commissionrate', 'managerid',
     ];
 
+    /**
+     * A — одобрен
+     * P — в ожидании
+     * D — отклонён
+     *
+     * @var array
+     */
     private $allowedStatuses = [
         'A', 'P', 'D'
     ];
