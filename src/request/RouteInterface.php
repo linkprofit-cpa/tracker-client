@@ -15,7 +15,7 @@ interface RouteInterface
     public function getUrl();
 
     /**
-     * @return array
+     * @return string|null
      */
     public function getBody();
 
