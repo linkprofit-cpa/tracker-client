@@ -140,7 +140,7 @@ class ReadUsersBuilder implements BuilderInterface
             $unixTime = time();
         }
 
-        $this->params['dateInsertedFrom'] = date('d.m.Y', $unixTime);
+        $this->params['dateInsertedTo'] = date('d.m.Y', $unixTime);
 
         return $this;
     }
