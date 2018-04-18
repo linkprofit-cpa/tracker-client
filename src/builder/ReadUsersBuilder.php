@@ -9,13 +9,8 @@ use linkprofit\Tracker\request\ReadUsersRoute;
  *
  * @package linkprofit\Tracker\filter
  */
-class ReadUsersBuilder implements BuilderInterface
+class ReadUsersBuilder extends BaseBuilder
 {
-    /**
-     * @var array
-     */
-    public $params = [];
-
     /**
      * @var array
      */
@@ -46,19 +41,14 @@ class ReadUsersBuilder implements BuilderInterface
     ];
 
     /**
-     * @return array
-     */
-    public function toArray()
-    {
-        return $this->params;
-    }
-
-    /**
      * @return ReadUsersRoute
      */
     public function createRoute()
     {
-        return new ReadUsersRoute($this);
+        $route = new ReadUsersRoute();
+        $route->setActiveFilters($this->toArray());
+
+        return $route;
     }
 
     /**
