@@ -27,5 +27,5 @@ class ReadOfferRoute extends BaseRoute
     /**
      * @var array
      */
-    protected $required = ['offerId'];
+    protected $required = ['authToken', 'offerId'];
 }
