@@ -54,7 +54,7 @@ abstract class BaseRoute implements RouteInterface
     /**
      * @var array
      */
-    protected $required = [];
+    protected $required = ['authToken'];
 
     /**
      * @var array
