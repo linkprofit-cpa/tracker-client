@@ -34,17 +34,18 @@ class ReadOffersRouteTest extends TestCase
         $rightBody = [
             'categoryId' => 1,
             'limit' => 1,
-            'offset' => 20
+            'offset' => 20,
+            'authToken' => 'nice_token'
         ];
 
         $content = $this->offers->get();
-        $this->assertEquals(json_encode($rightBody), $content->getBody());
+        $this->assertNull($content->getBody());
 
         $content->setAuthToken('nice_token');
-        $this->assertEquals(json_encode(array_merge($rightBody, ['authToken' => 'nice_token'])), $content->getBody());
+        $this->assertEquals(json_encode($rightBody), $content->getBody());
 
         $content = new ReadOffersRouteProvider();
-        $this->assertEquals(json_encode([]), $content->getEmpty()->getBody());
+        $this->assertNull($content->getEmpty()->getBody());
     }
 
     public function testGetHash()

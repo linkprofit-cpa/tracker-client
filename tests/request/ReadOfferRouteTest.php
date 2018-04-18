@@ -34,13 +34,14 @@ class ReadOfferRouteTest extends TestCase
     {
         $rightBody = [
             'offerId' => '1ee34g',
+            'authToken' => 'nice_token'
         ];
 
         $content = $this->offer->get();
-        $this->assertEquals(json_encode($rightBody), $content->getBody());
+        $this->assertNull($content->getBody());
 
         $content->setAuthToken('nice_token');
-        $this->assertEquals(json_encode(array_merge($rightBody, ['authToken' => 'nice_token'])), $content->getBody());
+        $this->assertEquals(json_encode($rightBody), $content->getBody());
 
         $content = new ReadOfferRouteProvider();
         $this->assertEquals(null, $content->getEmpty()->getBody());
