@@ -100,6 +100,10 @@ abstract class BaseRoute implements RouteInterface
      */
     public function getBody()
     {
+        if ($this->authToken !== null) {
+            $this->activeFilters['authToken'] = $this->authToken;
+        }
+
         if (!$this->checkRequired()) {
             return null;
         }
@@ -112,7 +116,7 @@ abstract class BaseRoute implements RouteInterface
         }
 
         if ($this->authToken !== null) {
-            $this->body['authToken'] = $this->authToken;
+            unset($this->activeFilters['authToken']);
         }
 
         return json_encode($this->body);
