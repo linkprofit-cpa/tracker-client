@@ -9,27 +9,17 @@ use linkprofit\Tracker\request\ReadOfferRoute;
  *
  * @package linkprofit\Tracker\builder
  */
-class ReadOfferBuilder implements BuilderInterface
+class ReadOfferBuilder extends BaseBuilder
 {
-    /**
-     * @var array
-     */
-    public $params = [];
-
-    /**
-     * @return array
-     */
-    public function toArray()
-    {
-        return $this->params;
-    }
-
     /**
      * @return ReadOfferRoute
      */
     public function createRoute()
     {
-        return new ReadOfferRoute($this);
+        $route = new ReadOfferRoute();
+        $route->setActiveFilters($this->toArray());
+
+        return $route;
     }
 
     /**
