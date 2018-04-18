@@ -20,6 +20,12 @@ class ReadUsersBuilderTest extends TestCase
             'accountManagerId' => 2, 'dateInsertedFrom' => '10.12.2017', 'dateInsertedTo' => '10.02.2018',
             'orderByMethod' => 'ASC', 'orderByField' => 'phone', 'mainFilterItem' => 'sample'],
         $builder->toArray());
+
+        $builder->dateInsertedTo();
+        $this->assertNotNull($builder->params['dateInsertedTo']);
+
+        $builder->dateInsertedFrom();
+        $this->assertNotNull($builder->params['dateInsertedTo']);
     }
 
     public function testCreateRequestContent()

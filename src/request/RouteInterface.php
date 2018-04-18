@@ -25,6 +25,11 @@ interface RouteInterface
     public function getMethod();
 
     /**
+     * @param $filters
+     */
+    public function setActiveFilters($filters);
+
+    /**
      * @param $accessLevel
      */
     public function setAccessLevel($accessLevel);

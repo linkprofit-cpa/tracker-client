@@ -72,6 +72,14 @@ abstract class BaseRoute implements RouteInterface
     }
 
     /**
+     * @param array $filters
+     */
+    public function setActiveFilters($filters)
+    {
+        $this->activeFilters = $filters;
+    }
+
+    /**
      * @param $accessLevel
      */
     public function setAccessLevel($accessLevel)
