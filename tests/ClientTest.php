@@ -167,12 +167,17 @@ class ClientTest extends TestCase
 
     public function testGetDefaultFileCache()
     {
+        $expectedPath = dirname(__DIR__) . '/cache';
+        $toDelete = is_dir($expectedPath) ? false : true;
+
         $client = new Client($this->connection->getUser());
         $fileCache = $this->invokeMethod($client, 'getDefaultFileCache');
         $this->assertInstanceOf(FilesystemPool::class, $fileCache);
+        $this->assertEquals($expectedPath . DIRECTORY_SEPARATOR . 'key' . ".cache", $this->invokeMethod($fileCache, 'getPath', ['key']));
 
-        $expectedPath = dirname(__DIR__) . '/cache' . DIRECTORY_SEPARATOR . 'key' . ".cache";
-        $this->assertEquals($expectedPath, $this->invokeMethod($fileCache, 'getPath', ['key']));
+        if ($toDelete) {
+            rmdir($expectedPath);
+        }
     }
 
     public function setUp()
