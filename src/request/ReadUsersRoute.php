@@ -30,15 +30,4 @@ class ReadUsersRoute extends BaseRoute
      * @var array
      */
     protected $filters = ['limit', 'offset', 'fields', 'statuses', 'dateInsertedFrom', 'dateInsertedTo', 'orderByField', 'orderByMethod'];
-
-    /**
-     * OffersRequestContent constructor.
-     * @param BuilderInterface $builder
-     * @param string|null $authToken
-     */
-    public function __construct(BuilderInterface $builder, $authToken = null)
-    {
-        $this->activeFilters = $builder->toArray();
-        $this->authToken = $authToken;
-    }
 }

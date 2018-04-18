@@ -30,15 +30,4 @@ class ReadOfferRoute extends BaseRoute
      * @var array
      */
     protected $required = ['offerId'];
-
-    /**
-     * OffersRequestContent constructor.
-     * @param BuilderInterface $builder
-     * @param string|null $authToken
-     */
-    public function __construct(BuilderInterface $builder, $authToken = null)
-    {
-        $this->activeFilters = $builder->toArray();
-        $this->authToken = $authToken;
-    }
 }
