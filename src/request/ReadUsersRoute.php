@@ -2,8 +2,6 @@
 
 namespace linkprofit\Tracker\request;
 
-use linkprofit\Tracker\builder\BuilderInterface;
-
 /**
  * Class ReadUsersRoute
  *

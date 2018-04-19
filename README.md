@@ -15,8 +15,8 @@
 
 ## Пример
 
+### Создание соединения
 ```php
-/* создаем соединение */
 $connection = new \linkprofit\Tracker\Connection();
 
 /* указываем параметры соединения */
@@ -28,15 +28,24 @@ $connection->accessLevel = \linkprofit\Tracker\AccessLevel::USER;
 /* создаем клиент и подключаемся к трекеру */
 $client = new \linkprofit\Tracker\Client($connection);
 $client->connect();
-
-/* формируем запрос */
-$offers = new \linkprofit\Tracker\builder\ReadOffersBuilder();
-$offers = $offers->isActive()->limit(10)->createRoute();
-
-/* получаем оффера */
-$response = $client->exec($offers);
-$response->handle()
 ```
+
+### Формируем запросы
+
+[Для офферов](docs/offers.md)
+
+[Для пользователей](docs/users.md)
+
+[Для категорий](docs/categories.md)
+
+### Выполняем запросы и получаем данные
+
+```php
+$response = $client->exec($route);
+$response->handle();
+```
+
+## Дополнительные параметры
 
 Вы можете использовать кеш, отвечающий `PSR-16` стандарту `simple-cache`
 

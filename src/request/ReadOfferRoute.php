@@ -2,8 +2,6 @@
 
 namespace linkprofit\Tracker\request;
 
-use linkprofit\Tracker\builder\BuilderInterface;
-
 /**
  * Class ReadOfferRoute
  *
@@ -29,5 +27,5 @@ class ReadOfferRoute extends BaseRoute
     /**
      * @var array
      */
-    protected $required = ['offerId'];
+    protected $required = ['authToken', 'offerId'];
 }
