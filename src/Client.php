@@ -10,7 +10,7 @@ use linkprofit\Tracker\request\RouteInterface;
 use linkprofit\Tracker\response\ResponseHandlerInterface;
 use linkprofit\Tracker\response\ArrayResponseHandler;
 use Psr\SimpleCache\CacheInterface;
-use duncan3dc\Cache\FilesystemPool;
+use Symfony\Component\Cache\Simple\FilesystemCache;
 
 /**
  * Class Client
@@ -144,9 +144,9 @@ class Client
     }
 
     /**
-     * @param string $path
+     * @param null $path
      *
-     * @return FilesystemPool
+     * @return FilesystemCache
      */
     public function getDefaultFileCache($path = null)
     {
@@ -154,7 +154,7 @@ class Client
             $path = dirname(__DIR__) . '/cache';
         }
 
-        return new FilesystemPool($path);
+        return new FilesystemCache('', 0, $path);
     }
 
     /**

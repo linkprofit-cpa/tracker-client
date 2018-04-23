@@ -14,6 +14,7 @@ use linkprofit\Tracker\tests\providers\ConnectionProvider;
 use org\bovigo\vfs\vfsStreamWrapper;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
+use Symfony\Component\Cache\Simple\FilesystemCache;
 
 class ClientTest extends TestCase
 {
@@ -172,8 +173,7 @@ class ClientTest extends TestCase
 
         $client = new Client($this->connection->getUser());
         $fileCache = $this->invokeMethod($client, 'getDefaultFileCache');
-        $this->assertInstanceOf(FilesystemPool::class, $fileCache);
-        $this->assertEquals($expectedPath . DIRECTORY_SEPARATOR . 'key' . ".cache", $this->invokeMethod($fileCache, 'getPath', ['key']));
+        $this->assertInstanceOf(FilesystemCache::class, $fileCache);
 
         if ($toDelete) {
             rmdir($expectedPath);
