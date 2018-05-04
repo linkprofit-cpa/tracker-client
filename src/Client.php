@@ -5,7 +5,7 @@ namespace linkprofit\Tracker;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use linkprofit\Tracker\request\ConnectionRoute;
+use linkprofit\Tracker\request\ConnectionQuery;
 use linkprofit\Tracker\request\RouteInterface;
 use linkprofit\Tracker\response\ResponseHandlerInterface;
 use linkprofit\Tracker\response\ArrayResponseHandler;
@@ -25,7 +25,7 @@ class Client
     public $apiUrl;
 
     /**
-     * @var ConnectionRoute
+     * @var ConnectionQuery
      */
     protected $connection;
 
@@ -59,7 +59,7 @@ class Client
         CacheInterface              $cache = null
     )
     {
-        $this->connection = new ConnectionRoute($connection);
+        $this->connection = new ConnectionQuery($connection);
         $this->apiUrl = $connection->apiUrl;
         $this->httpClient = ($httpClient === null) ? $this->getDefaultHttpClient() : $httpClient;
         $this->responseHandler = ($responseHandler === null) ? $this->getDefaultResponseHandler() : $responseHandler;

@@ -4,10 +4,10 @@ namespace linkprofit\Tracker\tests\providers;
 
 use linkprofit\Tracker\builder\ReadOfferBuilder;
 
-class ReadOfferRouteProvider
+class ReadOfferQueryProvider
 {
     /**
-     * @return \linkprofit\Tracker\request\ReadOfferRoute
+     * @return \linkprofit\Tracker\request\ReadOfferQuery
      */
     public function get()
     {
@@ -18,7 +18,7 @@ class ReadOfferRouteProvider
     }
 
     /**
-     * @return \linkprofit\Tracker\request\ReadOfferRoute
+     * @return \linkprofit\Tracker\request\ReadOfferQuery
      */
     public function getEmpty()
     {

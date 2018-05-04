@@ -3,22 +3,20 @@
 namespace linkprofit\AmoCRM\tests\request;
 
 use linkprofit\Tracker\AccessLevel;
-use linkprofit\Tracker\builder\ReadOfferBuilder;
-use linkprofit\Tracker\request\ReadCategoriesRoute;
-use linkprofit\Tracker\tests\providers\ReadOfferRouteProvider;
-use linkprofit\Tracker\tests\providers\ReadOffersRouteProvider;
+use linkprofit\Tracker\request\ReadCategoriesQuery;
+use linkprofit\Tracker\tests\providers\ReadOffersQueryProvider;
 use PHPUnit\Framework\TestCase;
 
-class ReadCategoriesRouteTest extends TestCase
+class ReadCategoriesQueryTest extends TestCase
 {
     /**
-     * @var ReadOffersRouteProvider
+     * @var ReadOffersQueryProvider
      */
     public $offer;
 
     public function testUrl()
     {
-        $content = new ReadCategoriesRoute();
+        $content = new ReadCategoriesQuery();
         $this->assertEquals($content->getUrl(), '/cabinet/user/read/all/categories');
 
         $content->setAccessLevel(AccessLevel::ADMIN);
@@ -27,7 +25,7 @@ class ReadCategoriesRouteTest extends TestCase
 
     public function testGetMethod()
     {
-        $content = new ReadCategoriesRoute();
+        $content = new ReadCategoriesQuery();
         $this->assertEquals('PUT', $content->getMethod());
     }
 
@@ -37,7 +35,7 @@ class ReadCategoriesRouteTest extends TestCase
             'authToken' => 'nice_token'
         ];
 
-        $content = new ReadCategoriesRoute();
+        $content = new ReadCategoriesQuery();
         $this->assertNull($content->getBody());
 
         $content->setAuthToken('nice_token');
@@ -46,8 +44,8 @@ class ReadCategoriesRouteTest extends TestCase
 
     public function testGetHash()
     {
-        $content = new ReadCategoriesRoute();
-        $secondContent = new ReadCategoriesRoute();
+        $content = new ReadCategoriesQuery();
+        $secondContent = new ReadCategoriesQuery();
 
         $this->assertEquals($content->getHash(), $secondContent->getHash());
 

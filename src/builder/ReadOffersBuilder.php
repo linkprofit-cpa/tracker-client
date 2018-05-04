@@ -2,7 +2,7 @@
 
 namespace linkprofit\Tracker\builder;
 
-use linkprofit\Tracker\request\ReadOffersRoute;
+use linkprofit\Tracker\request\ReadOffersQuery;
 
 /**
  * Class ReadOffersBuilder
@@ -12,11 +12,11 @@ use linkprofit\Tracker\request\ReadOffersRoute;
 class ReadOffersBuilder extends BaseBuilder
 {
     /**
-     * @return ReadOffersRoute
+     * @return ReadOffersQuery
      */
     public function createRoute()
     {
-        $route = new ReadOffersRoute();
+        $route = new ReadOffersQuery();
         $route->setActiveFilters($this->toArray());
 
         return $route;

@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use linkprofit\Tracker\builder\ReadOffersBuilder;
-use linkprofit\Tracker\request\ReadOffersRoute;
+use linkprofit\Tracker\request\ReadOffersQuery;
 
 class ReadOffersBuilderTest extends TestCase
 {
@@ -20,6 +20,6 @@ class ReadOffersBuilderTest extends TestCase
         $builder = new ReadOffersBuilder();
         $builder->categoryId(1)->isActive()->limit(10)->offset(20)->orderByField('field');
 
-        $this->assertInstanceOf(ReadOffersRoute::class, $builder->createRoute());
+        $this->assertInstanceOf(ReadOffersQuery::class, $builder->createRoute());
     }
 }

@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use linkprofit\Tracker\builder\ReadOfferBuilder;
-use linkprofit\Tracker\request\ReadOfferRoute;
+use linkprofit\Tracker\request\ReadOfferQuery;
 
 class ReadOfferBuilderTest extends TestCase
 {
@@ -20,6 +20,6 @@ class ReadOfferBuilderTest extends TestCase
         $builder = new ReadOfferBuilder();
         $builder->offerId('1ee34g');
 
-        $this->assertInstanceOf(ReadOfferRoute::class, $builder->createRoute());
+        $this->assertInstanceOf(ReadOfferQuery::class, $builder->createRoute());
     }
 }

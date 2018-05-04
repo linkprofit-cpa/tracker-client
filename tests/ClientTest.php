@@ -6,8 +6,8 @@ use duncan3dc\Cache\FilesystemPool;
 use linkprofit\Tracker\Client;
 use linkprofit\Tracker\response\ArrayResponseHandler;
 use linkprofit\Tracker\tests\fakers\HttpClient;
-use linkprofit\Tracker\tests\providers\ConnectionRouteProvider;
-use linkprofit\Tracker\tests\providers\ReadOffersRouteProvider;
+use linkprofit\Tracker\tests\providers\ConnectionQueryProvider;
+use linkprofit\Tracker\tests\providers\ReadOffersQueryProvider;
 use linkprofit\Tracker\tests\providers\ResponseProvider;
 use PHPUnit\Framework\TestCase;
 use linkprofit\Tracker\tests\providers\ConnectionProvider;
@@ -24,7 +24,7 @@ class ClientTest extends TestCase
     public $connection;
 
     /**
-     * @var ConnectionRouteProvider
+     * @var ConnectionQueryProvider
      */
     public $connectionContent;
 
@@ -34,7 +34,7 @@ class ClientTest extends TestCase
     public $response;
 
     /**
-     * @var ReadOffersRouteProvider
+     * @var ReadOffersQueryProvider
      */
     public $offers;
 
@@ -183,9 +183,9 @@ class ClientTest extends TestCase
     public function setUp()
     {
         $this->connection = new ConnectionProvider();
-        $this->connectionContent = new ConnectionRouteProvider();
+        $this->connectionContent = new ConnectionQueryProvider();
         $this->response = new ResponseProvider();
-        $this->offers = new ReadOffersRouteProvider();
+        $this->offers = new ReadOffersQueryProvider();
 
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('cache'));

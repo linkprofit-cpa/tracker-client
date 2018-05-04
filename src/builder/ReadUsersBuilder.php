@@ -2,7 +2,8 @@
 
 namespace linkprofit\Tracker\builder;
 
-use linkprofit\Tracker\request\ReadUsersRoute;
+use linkprofit\Tracker\request\ReadOffersQuery;
+use linkprofit\Tracker\request\ReadUsersQuery;
 
 /**
  * Class ReadUsersBuilder
@@ -41,11 +42,11 @@ class ReadUsersBuilder extends BaseBuilder
     ];
 
     /**
-     * @return ReadUsersRoute
+     * @return ReadUsersQuery
      */
     public function createRoute()
     {
-        $route = new ReadUsersRoute();
+        $route = new ReadUsersQuery();
         $route->setActiveFilters($this->toArray());
 
         return $route;

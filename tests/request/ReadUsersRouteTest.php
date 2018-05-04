@@ -4,14 +4,14 @@ namespace linkprofit\AmoCRM\tests\request;
 
 use linkprofit\Tracker\AccessLevel;
 use linkprofit\Tracker\builder\ReadUsersBuilder;
-use linkprofit\Tracker\tests\providers\ReadOffersRouteProvider;
-use linkprofit\Tracker\tests\providers\ReadUsersRouteProvider;
+use linkprofit\Tracker\tests\providers\ReadOffersQueryProvider;
+use linkprofit\Tracker\tests\providers\ReadUsersQueryProvider;
 use PHPUnit\Framework\TestCase;
 
 class ReadUsersRouteTest extends TestCase
 {
     /**
-     * @var ReadUsersRouteProvider
+     * @var ReadUsersQueryProvider
      */
     public $users;
 
@@ -45,7 +45,7 @@ class ReadUsersRouteTest extends TestCase
         $content->setAuthToken('nice_token');
         $this->assertEquals(json_encode($rightBody), $content->getBody());
 
-        $content = new ReadOffersRouteProvider();
+        $content = new ReadOffersQueryProvider();
         $this->assertNull($content->getEmpty()->getBody());
     }
 
@@ -73,7 +73,7 @@ class ReadUsersRouteTest extends TestCase
 
     public function setUp()
     {
-        $this->users = new ReadUsersRouteProvider();
+        $this->users = new ReadUsersQueryProvider();
     }
 
     public function invokeMethod(&$object, $methodName, array $parameters = array())

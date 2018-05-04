@@ -3,11 +3,11 @@
 namespace linkprofit\Tracker\request;
 
 /**
- * Class OffersRequestContent
+ * Class OffersRequestQuery
  *
  * @package linkprofit\Tracker\request
  */
-class ReadOffersRoute extends BaseRoute
+class ReadOffersQuery extends BaseRoute
 {
     /**
      * @var string|null

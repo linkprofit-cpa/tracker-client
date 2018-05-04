@@ -2,14 +2,14 @@
 
 namespace linkprofit\Tracker\tests\providers;
 
-use linkprofit\Tracker\request\ConnectionRoute;
+use linkprofit\Tracker\request\ConnectionQuery;
 
-class ConnectionRouteProvider
+class ConnectionQueryProvider
 {
     public function getUser()
     {
         $connection = new ConnectionProvider();
 
-        return new ConnectionRoute($connection->getUser());
+        return new ConnectionQuery($connection->getUser());
     }
 }
