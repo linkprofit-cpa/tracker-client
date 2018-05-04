@@ -3,12 +3,11 @@
 namespace linkprofit\AmoCRM\tests\request;
 
 use linkprofit\Tracker\AccessLevel;
-use linkprofit\Tracker\request\ConnectionRequestContent;
-use linkprofit\Tracker\request\ConnectionRoute;
+use linkprofit\Tracker\request\ConnectionQuery;
 use linkprofit\Tracker\tests\providers\ConnectionProvider;
 use PHPUnit\Framework\TestCase;
 
-class ConnectionRouteTest extends TestCase
+class ConnectionQueryTest extends TestCase
 {
     /**
      * @var ConnectionProvider
@@ -17,12 +16,12 @@ class ConnectionRouteTest extends TestCase
 
     public function testAccess()
     {
-        $content = new ConnectionRoute($this->connection->getUser());
+        $content = new ConnectionQuery($this->connection->getUser());
 
         $this->assertEquals($content->getAccessLevel(), AccessLevel::USER);
         $this->assertEquals($content->getUrl(), '/authorization/user');
 
-        $content = new ConnectionRoute($this->connection->getAdmin());
+        $content = new ConnectionQuery($this->connection->getAdmin());
 
         $this->assertEquals($content->getAccessLevel(), AccessLevel::ADMIN);
         $this->assertEquals($content->getUrl(), '/authorization/employer');
@@ -30,16 +29,16 @@ class ConnectionRouteTest extends TestCase
 
     public function testRequiredCheck()
     {
-        $content = new ConnectionRoute($this->connection->getUser());
+        $content = new ConnectionQuery($this->connection->getUser());
         $this->assertTrue($this->invokeMethod($content, 'checkRequired'));
 
-        $content = new ConnectionRoute($this->connection->getEmpty());
+        $content = new ConnectionQuery($this->connection->getEmpty());
         $this->assertFalse($this->invokeMethod($content, 'checkRequired'));
     }
 
     public function testGetMethod()
     {
-        $content = new ConnectionRoute($this->connection->getUser());
+        $content = new ConnectionQuery($this->connection->getUser());
         $this->assertEquals('PUT', $content->getMethod());
     }
 
@@ -50,10 +49,10 @@ class ConnectionRouteTest extends TestCase
             'userPassword' => 'password'
         ];
 
-        $content = new ConnectionRoute($this->connection->getUser());
+        $content = new ConnectionQuery($this->connection->getUser());
         $this->assertEquals(json_encode($rightBody), $content->getBody());
 
-        $content = new ConnectionRoute($this->connection->getEmpty());
+        $content = new ConnectionQuery($this->connection->getEmpty());
         $this->assertNull($content->getBody());
     }
 

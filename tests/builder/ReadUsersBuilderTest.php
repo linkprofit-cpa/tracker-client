@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use linkprofit\Tracker\builder\ReadUsersBuilder;
-use linkprofit\Tracker\request\ReadUsersRoute;
+use linkprofit\Tracker\request\ReadUsersQuery;
 
 class ReadUsersBuilderTest extends TestCase
 {
@@ -33,6 +33,6 @@ class ReadUsersBuilderTest extends TestCase
         $builder = new ReadUsersBuilder();
         $builder->statuses(['a', 'p'])->fields(['apiKey', 'refId'])->limit(5);
 
-        $this->assertInstanceOf(ReadUsersRoute::class, $builder->createRoute());
+        $this->assertInstanceOf(ReadUsersQuery::class, $builder->createRoute());
     }
 }

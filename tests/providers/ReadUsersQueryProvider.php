@@ -4,10 +4,10 @@ namespace linkprofit\Tracker\tests\providers;
 
 use linkprofit\Tracker\builder\ReadUsersBuilder;
 
-class ReadUsersRouteProvider
+class ReadUsersQueryProvider
 {
     /**
-     * @return \linkprofit\Tracker\request\ReadUsersRoute
+     * @return \linkprofit\Tracker\request\ReadUsersQuery
      */
     public function get()
     {
