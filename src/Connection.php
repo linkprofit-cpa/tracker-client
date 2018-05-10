@@ -41,7 +41,7 @@ class Connection
         $this->userName = $userName;
         $this->userPassword = $userPassword;
         $this->apiUrl = $apiUrl;
-        $this->accessLevel = $accessLevel;
+        $this->accessLevel = (int) $accessLevel;
     }
 
     /**
