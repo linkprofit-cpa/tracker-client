@@ -1,6 +1,7 @@
 <?php
 
 namespace linkprofit\Tracker\request;
+use linkprofit\Tracker\exception\ReadOfferExceptionHandler;
 
 /**
  * Class ReadOfferQuery
@@ -28,4 +29,12 @@ class ReadOfferQuery extends BaseRoute
      * @var array
      */
     protected $required = ['authToken', 'offerId'];
+
+    /**
+     * @return ReadOfferExceptionHandler
+     */
+    public function getExceptionHandler()
+    {
+        return new ReadOfferExceptionHandler();
+    }
 }

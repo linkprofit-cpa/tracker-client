@@ -2,8 +2,8 @@
 
 namespace linkprofit\AmoCRM\tests;
 
-use duncan3dc\Cache\FilesystemPool;
 use linkprofit\Tracker\Client;
+use linkprofit\Tracker\exception\TrackerException;
 use linkprofit\Tracker\response\ArrayResponseHandler;
 use linkprofit\Tracker\tests\fakers\HttpClient;
 use linkprofit\Tracker\tests\providers\ConnectionQueryProvider;
@@ -117,7 +117,6 @@ class ClientTest extends TestCase
         $response = $client->exec($this->offers->get());
 
         $this->assertInstanceOf(ArrayResponseHandler::class, $response);
-        $this->assertTrue($response->isSuccess());
         $this->assertNotEmpty($response->handle());
     }
 
@@ -141,10 +140,16 @@ class ClientTest extends TestCase
         $response = $client->exec($this->offers->get());
 
         $this->assertInstanceOf(ArrayResponseHandler::class, $response);
-        $this->assertTrue($response->isSuccess());
         $this->assertNotEmpty($response->handle());
     }
 
+    /**
+     * @expectedException \linkprofit\Tracker\exception\TrackerException
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \linkprofit\Tracker\exception\TrackerException
+     */
     public function testErrorConnect()
     {
         $client = new Client($this->connection->getUser());

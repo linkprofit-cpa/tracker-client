@@ -1,6 +1,7 @@
 <?php
 
 namespace linkprofit\Tracker\request;
+use linkprofit\Tracker\exception\ReadOffersExceptionHandler;
 
 /**
  * Class OffersRequestQuery
@@ -28,4 +29,12 @@ class ReadOffersQuery extends BaseRoute
      * @var array
      */
     protected $filters = ['merchantManagerId', 'categoryId', 'mainFilterItem', 'dateInsertedFrom', 'dateInsertedTo', 'active', 'types', 'fields', 'offset', 'limit', 'orderByField', 'orderByMethod'];
+
+    /**
+     * @return ReadOffersExceptionHandler
+     */
+    public function getExceptionHandler()
+    {
+        return new ReadOffersExceptionHandler();
+    }
 }

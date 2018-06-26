@@ -2,6 +2,7 @@
 
 namespace linkprofit\AmoCRM\tests\response;
 
+use linkprofit\Tracker\exception\TrackerException;
 use linkprofit\Tracker\response\ArrayResponseHandler;
 use linkprofit\Tracker\tests\providers\ResponseProvider;
 use PHPUnit\Framework\TestCase;
@@ -13,13 +14,18 @@ class ArrayResponseHandlerTest extends TestCase
      */
     public $responseProvider;
 
+    /**
+     * @expectedException \linkprofit\Tracker\exception\TrackerException
+     *
+     * @throws \linkprofit\Tracker\exception\TrackerException
+     */
     public function testIsSuccess()
     {
         $response = new ArrayResponseHandler($this->responseProvider->getSuccess());
-        $this->assertTrue($response->isSuccess());
+        $this->assertNotNull($response->handle());
 
         $response = new ArrayResponseHandler($this->responseProvider->getError());
-        $this->assertFalse($response->isSuccess());
+        $response->handle();
     }
 
     public function testHandle()

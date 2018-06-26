@@ -2,6 +2,8 @@
 
 namespace linkprofit\Tracker\request;
 
+use linkprofit\Tracker\exception\ExceptionHandlerInterface;
+
 /**
  * Interface RouteInterface
  *
@@ -43,4 +45,9 @@ interface RouteInterface
      * @return string
      */
     public function getHash();
+
+    /**
+     * @return ExceptionHandlerInterface
+     */
+    public function getExceptionHandler();
 }

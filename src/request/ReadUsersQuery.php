@@ -1,6 +1,7 @@
 <?php
 
 namespace linkprofit\Tracker\request;
+use linkprofit\Tracker\exception\ReadUsersExceptionHandler;
 
 /**
  * Class ReadUsersQuery
@@ -28,4 +29,12 @@ class ReadUsersQuery extends BaseRoute
      * @var array
      */
     protected $filters = ['limit', 'offset', 'fields', 'statuses', 'dateInsertedFrom', 'dateInsertedTo', 'orderByField', 'orderByMethod'];
+
+    /**
+     * @return ReadUsersExceptionHandler
+     */
+    public function getExceptionHandler()
+    {
+        return new ReadUsersExceptionHandler();
+    }
 }

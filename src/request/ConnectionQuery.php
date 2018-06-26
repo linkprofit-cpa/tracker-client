@@ -3,6 +3,7 @@
 namespace linkprofit\Tracker\request;
 
 use linkprofit\Tracker\Connection;
+use linkprofit\Tracker\exception\ConnectionExceptionHandler;
 
 /**
  * Class ConnectionQuery
@@ -55,5 +56,13 @@ class ConnectionQuery extends BaseRoute
     public function getAuthToken()
     {
         return $this->authToken;
+    }
+
+    /**
+     * @return ConnectionExceptionHandler
+     */
+    public function getExceptionHandler()
+    {
+        return new ConnectionExceptionHandler();
     }
 }

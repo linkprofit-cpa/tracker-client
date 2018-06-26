@@ -3,6 +3,8 @@
 namespace linkprofit\Tracker\response;
 
 use GuzzleHttp\Psr7\Response;
+use linkprofit\Tracker\exception\TrackerException;
+use linkprofit\Tracker\exception\ExceptionHandlerInterface;
 
 /**
  * Class ArrayResponseHandler
@@ -14,12 +16,17 @@ class ArrayResponseHandler implements ResponseHandlerInterface
     /**
      * @var array
      */
-    public $decodedArray = [];
+    public $decodedBody = [];
 
     /**
      * @var Response
      */
     protected $response;
+
+    /**
+     * @var ExceptionHandlerInterface
+     */
+    protected $exceptionHandler;
 
     /**
      * ArrayResponseHandler constructor.
@@ -39,41 +46,56 @@ class ArrayResponseHandler implements ResponseHandlerInterface
     public function add(Response $response)
     {
         $this->response = $response;
-        $this->createArray();
+        $this->setDecodedBody();
     }
 
     /**
-     * @return array
+     * @return array|mixed
+     * @throws TrackerException
      */
     public function handle()
     {
-        $this->createArray();
+        try {
+            $this->validateResponse();
+        } catch (TrackerException $exception) {
+            if ($this->exceptionHandler !== null) {
+                $this->exceptionHandler->handle($exception->getCode());
+            }
 
-        return $this->decodedArray;
+            throw $exception;
+        }
+
+        return $this->decodedBody;
     }
 
     /**
-     * @return bool
+     * @param ExceptionHandlerInterface $exceptionHandler
      */
-    public function isSuccess()
+    public function setExceptionHandler(ExceptionHandlerInterface $exceptionHandler)
     {
-        return $this->response->getStatusCode() === 200;
+        $this->exceptionHandler = $exceptionHandler;
     }
 
     /**
-     * Set $this->decodedArray
+     * Set $this->decodedBody
      */
-    protected function createArray()
+    protected function setDecodedBody()
     {
-        $jsonDecode = $this->jsonDecode();
-        $this->decodedArray = is_array($jsonDecode) ? $jsonDecode : [];
+        $decodedJson = json_decode($this->response->getBody(), 1);
+        $this->decodedBody = is_array($decodedJson) ? $decodedJson : [];
     }
 
     /**
-     * @return mixed
+     * @throws TrackerException
      */
-    protected function jsonDecode()
+    protected function validateResponse()
     {
-        return json_decode($this->response->getBody(), 1);
+        if ($this->response->getStatusCode() !== 200) {
+            throw new TrackerException('Код ответа сервера: ' . $this->response->getStatusCode());
+        }
+
+        if (isset($this->decodedBody['code'])) {
+            throw new TrackerException('', $this->decodedBody['code']);
+        }
     }
 }
