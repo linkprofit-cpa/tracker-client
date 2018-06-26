@@ -3,6 +3,8 @@
 namespace linkprofit\Tracker\response;
 
 use GuzzleHttp\Psr7\Response;
+use linkprofit\Tracker\exception\ExceptionHandlerInterface;
+use linkprofit\Tracker\exception\TrackerException;
 
 /**
  * Interface ResponseHandlerInterface
@@ -24,12 +26,14 @@ interface ResponseHandlerInterface
     public function add(Response $response);
 
     /**
+     * @param ExceptionHandlerInterface $exceptionHandler
      * @return mixed
      */
-    public function handle();
+    public function setExceptionHandler(ExceptionHandlerInterface $exceptionHandler);
 
     /**
-     * @return bool
+     * @return mixed
+     * @throws TrackerException
      */
-    public function isSuccess();
+    public function handle();
 }

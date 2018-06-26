@@ -5,6 +5,8 @@ namespace linkprofit\Tracker;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use linkprofit\Tracker\exception\ConnectionExceptionHandler;
+use linkprofit\Tracker\exception\TrackerException;
 use linkprofit\Tracker\request\ConnectionQuery;
 use linkprofit\Tracker\request\RouteInterface;
 use linkprofit\Tracker\response\ResponseHandlerInterface;
@@ -70,6 +72,9 @@ class Client
      * @param RouteInterface $route
      *
      * @return ArrayResponseHandler|ResponseHandlerInterface|null
+     * @throws TrackerException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function exec(RouteInterface $route)
     {
@@ -92,6 +97,7 @@ class Client
         }
 
         $this->responseHandler->add($response);
+        $this->responseHandler->setExceptionHandler($route->getExceptionHandler());
 
         return $this->responseHandler;
     }
@@ -100,6 +106,9 @@ class Client
      * TODO сделать переподключение при ошибке N-ное кол-во раз
      *
      * @return bool
+     * @throws TrackerException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function connect()
     {
@@ -108,9 +117,11 @@ class Client
         $result = $this->httpClient->send($request);
 
         $responseHandler = new ArrayResponseHandler($result);
+        $responseHandler->setExceptionHandler(new ConnectionExceptionHandler());
+
         $response = $responseHandler->handle();
 
-        if (isset($response['authToken']) && $responseHandler->isSuccess()) {
+        if (isset($response['authToken'])) {
             $this->setAuthToken($response['authToken']);
 
             return true;
@@ -210,6 +221,7 @@ class Client
     /**
      * @param Response $response
      * @param $key
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function setResponseToCache(Response $response, $key)
     {
@@ -224,8 +236,8 @@ class Client
 
     /**
      * @param $key
-     *
      * @return Response|null
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function getResponseFromCache($key)
     {
@@ -240,6 +252,7 @@ class Client
 
     /**
      * @param $authToken
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function setAuthToken($authToken)
     {
@@ -251,7 +264,8 @@ class Client
     }
 
     /**
-     * @return string|null
+     * @return mixed|string
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function getAuthToken()
     {

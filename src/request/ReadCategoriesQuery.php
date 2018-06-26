@@ -1,6 +1,7 @@
 <?php
 
 namespace linkprofit\Tracker\request;
+use linkprofit\Tracker\exception\ReadCategoriesExceptionHandler;
 
 /**
  * Class ReadCategoriesQuery
@@ -23,4 +24,12 @@ class ReadCategoriesQuery extends BaseRoute
      * @var string
      */
     protected $method = 'PUT';
+
+    /**
+     * @return ReadCategoriesExceptionHandler
+     */
+    public function getExceptionHandler()
+    {
+        return new ReadCategoriesExceptionHandler();
+    }
 }

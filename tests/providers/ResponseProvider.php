@@ -22,9 +22,9 @@ class ResponseProvider
 
     public function getError()
     {
-        $body = ['success' => false];
+        $body = ['success' => false, 'code' => 111];
 
-        return new Response(111, [], json_encode($body));
+        return new Response(200, [], json_encode($body));
     }
 
     public function getEmpty()
